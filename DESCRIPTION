@@ -14,3 +14,7 @@ Suggests:
 Config/testthat/edition: 3
 URL: https://github.com/cole-brokamp/lbl
 BugReports: https://github.com/cole-brokamp/lbl/issues
+Imports: 
+    cli,
+    pillar,
+    rlang
