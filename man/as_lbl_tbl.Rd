@@ -30,6 +30,4 @@ d <-
   )
 d <- as_lbl_tbl(d)
 d$letters
-(d_labels <- lapply(d, \(.) attr(., "label") \%||\% character()))
-(d_metadata <- attributes(d)[c("name", "title", "version", "description", "created")])
 }

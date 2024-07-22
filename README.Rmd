@@ -34,9 +34,17 @@ devtools::install_github("cole-brokamp/lbl")
 
 ## Overview
 
-A labeled vector (`lbl_vec`) is an atomic vector (e.g., logical, integer, double, character)
-
 ```{r}
 library(lbl)
-## basic example code
 ```
+
+A labeled vector (`lbl_vec`) is a vector in R (see `?vctrs::vector_checks` for details) with a label attached. Convert a vector into a labeled vector with `as_lbl_vec` by passing a label character string.
+
+```{r}
+as_lbl_vec(letters, "The Alphabet")
+```
+
+Label is printed, but extract with `get_label()`
+
+A labeled table (`lbl_tbl`) is
+

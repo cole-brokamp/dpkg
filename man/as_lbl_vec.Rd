@@ -7,12 +7,8 @@
 as_lbl_vec(x = vector(), label, ...)
 }
 \arguments{
-\item{x}{a vector (see \code{vctrs::obj_check_vector()})}
-
-\item{label}{character string}
-}
-\value{
-object of type \code{lbl_vec}, a labeled vector
+\item{x}{a vector (see \code{vctrs::obj_check_vector()})
+type \code{lbl_vec}, a labeled vector}
 }
 \description{
 Convert a vector into a labeled vector (\code{lbl_vec}) by providing a label
@@ -22,5 +18,4 @@ as_lbl_vec(letters, "the alphabet")
 as_lbl_vec(1:10, "the numbers")
 as_lbl_vec(c(T, T, F, T), "is foofy")
 x <- as_lbl_vec(letters, "The Alphabet")
-attr(x, "label")
 }

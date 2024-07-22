@@ -4,29 +4,30 @@
 \alias{get_labels}
 \title{get labels}
 \usage{
-get_labels(x, missing_label = "deparse")
+get_labels(x, missing_label = c("names", "na"))
 }
 \arguments{
 \item{x}{a \code{lbl_tbl} object (see \code{as_lbl_tbl()})}
 
-\item{missing_label}{what to return in the case of no label attribute: \code{"na"} returns missing values,
-\code{"deparse"} substitutes and deparses the code used to define \code{x} into a character string, and
-\code{"as_label"} tries to convert the code supplied as \code{x} to a label with \code{rlang::as_label()}}
+\item{missing_label}{what to return in the case of no label attribute: \code{"na"} returns missing values
+and \code{"names"} uses the column names}
 }
 \value{
-character vector of labels; \code{NA} values are used if a label does not exist
+character vector of labels
 }
 \description{
-Get the labels of labeled vectors in a labeled table
+Get labels of all vectors in a labeled table.
+By default, vectors without a label are labeled based on their name.
 }
 \examples{
 d <-
   tibble::tibble(
     id = labels(letters[1:5]),
     letters = as_lbl_vec(letters[1:5], "The Alphabet"),
-    numbers = as_lbl_vec(1:5, "the numbers"),
-    logicals = as_lbl_vec(c(TRUE, TRUE, FALSE, TRUE, FALSE), "is foofy")
-  )
-d <- as_lbl_tbl(d)
+    numbers = as_lbl_vec(1:5, "The numbers"),
+    logicals = as_lbl_vec(c(TRUE, TRUE, FALSE, TRUE, FALSE), "Is foofy")
+  ) |>
+  as_lbl_tbl()
 get_labels(d)
+get_labels(d, missing_label = "na")
 }

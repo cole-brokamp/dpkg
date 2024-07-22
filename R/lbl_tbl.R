@@ -53,11 +53,10 @@ tbl_format_footer.lbl_tbl <- function(x, ...) {
 #'     letters = as_lbl_vec(letters[1:5], "The Alphabet"),
 #'     numbers = as_lbl_vec(1:5, "the numbers"),
 #'     logicals = as_lbl_vec(c(TRUE, TRUE, FALSE, TRUE, FALSE), "is foofy")
-#'   )
-#' d <- as_lbl_tbl(d)
+#'   ) |>
+#'   as_lbl_tbl(d)
+#' d
 #' d$letters
-#' (d_labels <- lapply(d, \(.) attr(., "label") %||% character()))
-#' (d_metadata <- attributes(d)[c("name", "title", "version", "description", "created")])
 as_lbl_tbl <- function(x, ...) {
   dots <- rlang::dots_list(..., .homonyms = "error", .ignore_empty = "all", .check_assign = TRUE)
   x_tbl <- tibble::as_tibble(x)
@@ -71,35 +70,48 @@ as_lbl_tbl <- function(x, ...) {
   do.call(vctrs::new_data_frame, out)
 }
 
-# TODO as_readme.lbl_df
-# TODO as_datapackage.lbl_df
-
 #' get labels
 #'
-#' Get the labels of labeled vectors in a labeled table
+#' Get labels of all vectors in a labeled table.
+#' By default, vectors without a label are labeled based on their name.
 #' @param x a `lbl_tbl` object (see `as_lbl_tbl()`)
-#' @param missing_label what to return in the case of no label attribute: `"na"` returns missing values,
-#' `"deparse"` substitutes and deparses the code used to define `x` into a character string, and
-#' `"as_label"` tries to convert the code supplied as `x` to a label with `rlang::as_label()`
-#' @returns character vector of labels; `NA` values are used if a label does not exist
+#' @param missing_label what to return in the case of no label attribute: `"na"` returns missing values
+#' and `"names"` uses the column names
+#' @returns character vector of labels
 #' @export
 #' @examples
-#' d <-
-#'   tibble::tibble(
-#'     id = labels(letters[1:5]),
-#'     letters = as_lbl_vec(letters[1:5], "The Alphabet"),
-#'     numbers = as_lbl_vec(1:5, "the numbers"),
-#'     logicals = as_lbl_vec(c(TRUE, TRUE, FALSE, TRUE, FALSE), "is foofy")
-#'   )
-#' d <- as_lbl_tbl(d)
+#' d <- example_lbl_tbl()
 #' get_labels(d)
-get_labels <- function(x, missing_label = "deparse") {
-  stopifnot(inherits(x, "lbl_tbl"))
-  lapply(x, get_label, missing_label = missing_label) |>
+#' get_labels(d, missing_label = "na")
+get_labels <- function(x, missing_label = c("names", "na")) {
+  missing_label <- rlang::arg_match(missing_label)
+  if (!inherits(x, "lbl_tbl")) {
+    rlang::abort("x must be a `lbl_tbl` object; use `as_lbl_tbl(x)` to convert")
+  }
+  out <-
+    lapply(x, get_label, missing_label = "na") |>
     setNames(names(x))
+  if (missing_label == "names") {
+    out[is.na(out)] <- names(out)[is.na(out)]
+  }
+  return(out)
 }
 
+#' get metadata
+#'
+#' Get table-specific metadata associated with a labeled table (`lbl_tbl`) object.
+#' @param x a `lbl_tbl` object (see `as_lbl_tbl()`)
+#' @param which character vector of which metadata values to return
+#' @returns a list of table-specific metadata
+#' @export
+#' @examples
+#' d_md <- get_md(example_lbl_tbl())
+#' d_md[c("name", "title")]
+#' str(d_md)
+get_md <- function(x, which = c("name", "title", "version", "description", "created")) {
+  if (!inherits(x, "lbl_tbl")) rlang::abort("x must be a `lbl_tbl` object")
+  attributes(x)[which]
+}
 
-
-## get_md <- function(x) 
-
+# TODO as_readme.lbl_df
+# TODO as_datapackage.lbl_df
