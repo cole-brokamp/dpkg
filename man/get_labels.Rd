@@ -20,14 +20,7 @@ Get labels of all vectors in a labeled table.
 By default, vectors without a label are labeled based on their name.
 }
 \examples{
-d <-
-  tibble::tibble(
-    id = labels(letters[1:5]),
-    letters = as_lbl_vec(letters[1:5], "The Alphabet"),
-    numbers = as_lbl_vec(1:5, "The numbers"),
-    logicals = as_lbl_vec(c(TRUE, TRUE, FALSE, TRUE, FALSE), "Is foofy")
-  ) |>
-  as_lbl_tbl()
+d <- example_lbl_tbl()
 get_labels(d)
 get_labels(d, missing_label = "na")
 }

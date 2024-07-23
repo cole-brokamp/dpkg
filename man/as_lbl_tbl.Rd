@@ -27,7 +27,8 @@ d <-
     letters = as_lbl_vec(letters[1:5], "The Alphabet"),
     numbers = as_lbl_vec(1:5, "the numbers"),
     logicals = as_lbl_vec(c(TRUE, TRUE, FALSE, TRUE, FALSE), "is foofy")
-  )
-d <- as_lbl_tbl(d)
+  ) |>
+  as_lbl_tbl(d)
+d
 d$letters
 }

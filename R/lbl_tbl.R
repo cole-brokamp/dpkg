@@ -97,6 +97,29 @@ get_labels <- function(x, missing_label = c("names", "na")) {
   return(out)
 }
 
+#' update labels
+#'
+#' Update the labels in a labeled table
+#' @param x a labeled table (`lbl_tbl`) object
+#' @param ... `name = value` pairs (or a list) of vector labels
+#' @returns a labeled tibble (`lbl_tbl`) object
+#' @export
+#' @examples
+#' example_lbl_tbl() |>
+#'   update_labels(numbers = "My New Numbers") |>
+#'   get_labels()
+update_labels <- function(x, ...) {
+  x <- as_lbl_tbl(x)
+  out_labels <- get_labels(x)
+  dots <- rlang::dots_list(..., .homonyms = "error", .ignore_empty = "all", .check_assign = TRUE)
+  out_labels <- modifyList(out_labels, dots)
+  out <-
+    mapply(as_lbl_vec, x = x[, names(out_labels)], label = out_labels, SIMPLIFY = FALSE) |>
+    tibble::as_tibble() |>
+    as_lbl_tbl(!!!get_meta(x))
+  return(out)
+}
+
 #' get metadata
 #'
 #' Get table-specific metadata associated with a labeled table (`lbl_tbl`) object.
@@ -105,10 +128,10 @@ get_labels <- function(x, missing_label = c("names", "na")) {
 #' @returns a list of table-specific metadata
 #' @export
 #' @examples
-#' d_md <- get_md(example_lbl_tbl())
+#' d_md <- get_meta(example_lbl_tbl())
 #' d_md[c("name", "title")]
 #' str(d_md)
-get_md <- function(x, which = c("name", "title", "version", "description", "created")) {
+get_meta <- function(x, which = c("name", "title", "version", "description", "created")) {
   if (!inherits(x, "lbl_tbl")) rlang::abort("x must be a `lbl_tbl` object")
   attributes(x)[which]
 }
