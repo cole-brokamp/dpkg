@@ -85,14 +85,27 @@ d <-
     sep = " ", na.rm = TRUE, remove = TRUE
   )
 
-# update some column labels
-update_labels(d,
-  parcel_address = "Derived by pasting `parcel_addr_{number, street, suffix}` together",
-  parcel_id = "Uniquely identifies parcels of land (i.e., auditor parcel number)",
-  land_use = "Parcel land usage code; distinct from city land use codes"
-)
+# add metadata and updated labels
+out <-
+  d |>
+  as_lbl_tbl(!!!md) |>
+  update_labels(
+    parcel_address = "Derived by pasting `parcel_addr_{number, street, suffix}` together",
+    parcel_id = "Uniquely identifies parcels of land (i.e., auditor parcel number)",
+    land_use = "Parcel land usage code; distinct from city land use codes"
+  )
 
-# save to rds file
-saveRDS(out, glue::glue("{attr(out, 'name')}_v_{attr(out, 'version')}.rds"))
+## login using profile sso account
+system2("aws", c("sso", "login", "--profile", "geomarker-io"))
+Sys.setenv("AWS_PROFILE" = "geomarker-io")
 
-gh::gh()
+codec_board <-
+  pins::board_s3(
+    bucket = "io.geomarker.codec",
+    versioned = FALSE,
+    prefix = "data/",
+    profile = "geomarker-io",
+    cache = tools::R_user_dir("io.geomarker.codec.data", "cache")
+  )
+
+pins::pin_write(codec_board, out, name = glue::glue("{attr(out, 'name')}_v{attr(out, 'version')}"), type = "rds")

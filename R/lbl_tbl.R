@@ -109,7 +109,7 @@ get_labels <- function(x, missing_label = c("names", "na")) {
 #'   update_labels(numbers = "My New Numbers") |>
 #'   get_labels()
 update_labels <- function(x, ...) {
-  x <- as_lbl_tbl(x)
+  if (!inherits(x, "lbl_tbl")) rlang::abort("x must be a `lbl_tbl` object")
   out_labels <- get_labels(x)
   dots <- rlang::dots_list(..., .homonyms = "error", .ignore_empty = "all", .check_assign = TRUE)
   out_labels <- modifyList(out_labels, dots)
