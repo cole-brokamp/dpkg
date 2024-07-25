@@ -57,12 +57,3 @@ print.lbl_vec <- function(x, ...) {
   NextMethod("print")
 }
 
-## #' @export
-## format.lbl_vec <- function(x, ...) {
-##   cat(attr(x, "label"), "\n", sep = "")
-##   attr(x, "lbl_vec") <- NULL
-##   class(x) <- class(x)[!class(x) %in% "lbl_vec"]
-##   format(x)
-## }
-
-
