@@ -18,3 +18,7 @@ it will not be re-downloaded again, unless \code{force = TRUE}.
 Specify an alternative download location by setting the \code{R_USER_DATA_DIR}
 environment variable; see \code{?tools::R_user_dir}.
 }
+\examples{
+Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
+stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+}

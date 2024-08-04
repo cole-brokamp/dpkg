@@ -3,4 +3,7 @@
 export(as_dpkg)
 export(read_dpkg)
 export(read_dpkg_metadata)
+export(stow_exists)
+export(stow_info)
 export(stow_path)
+export(stow_size)

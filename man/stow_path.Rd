@@ -2,29 +2,10 @@
 % Please edit documentation in R/stow.R
 \name{stow_path}
 \alias{stow_path}
-\title{get the path to where files are stowed}
+\title{get the path to a stowed file (or the stow directory)}
 \usage{
 stow_path(filename = NULL)
 }
-\arguments{
-\item{filename}{optional; character filename to use in path}
-}
-\value{
-path to stowed file; if filename is NULL, then the path
-to the directory where files are stowed
-}
 \description{
-get the path to where files are stowed
-}
-\examples{
-
-stow_path()
-
-stow_path("foofy.rds")
-
-local({
-  withr::local_envvar(R_USER_DIR = tempfile("stow"))
-  stow_path()
-})
-
+get the path to a stowed file (or the stow directory)
 }
