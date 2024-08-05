@@ -29,7 +29,7 @@ read_dpkg_metadata <- function(x) {
 #' @returns a dpkg object
 #' @export
 read_dpkg <- function(x) {
-  x_md <- read_codec_dpkg_metadata(x)
+  x_md <- read_dpkg_metadata(x)
   new_dpkg(
     nanoparquet::read_parquet(x),
     name = x_md$`CoDEC:name`,
@@ -37,19 +37,6 @@ read_dpkg <- function(x) {
     title = x_md$`CoDEC:title`,
     homepage = x_md$`CoDEC:homepage` %||% character()
   )
-}
-
-#' download a file to the dpkg R user directory
-#' 
-#' Files are downloaded to the R user data
-#' directory and are cached across all of an R user’s sessions and projects.
-#' After reading an online data package for the first time, it will be cached
-#' has been read once it will not need to be downloaded again
-#' when it is read again.
-#' Specify an alternative download location by setting the `R_USER_DATA_DIR`
-#' environment variable; see `?tools::R_user_dir`.
-download_dpkg <- function(uri) {
-
 }
 
 #' write dpkg to disk

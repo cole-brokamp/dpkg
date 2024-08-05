@@ -8,24 +8,28 @@ as_dpkg(
   x,
   name = deparse(substitute(x)),
   version = "0.0.0.9000",
-  title = NULL,
-  homepage = NULL,
-  description = NULL
+  title = character(),
+  homepage = character(),
+  description = character()
 )
 }
 \arguments{
 \item{x}{a tibble or data frame}
 
-\item{name}{a lowercase character string consisting of only \code{a-z}, \code{0-9}, \code{-}, \verb{_}, or \code{.} to be used as a data package identifier}
+\item{name}{a lowercase character string consisting of only
+\code{a-z}, \code{0-9}, \code{-}, \verb{_}, or \code{.} to be used as a data package identifier}
 
-\item{version}{a character string representing a \href{https://datapackage.org/recipes/data-package-version/}{semantic version} (e.g., "0.2.1")}
+\item{version}{a character string representing a
+\href{https://datapackage.org/recipes/data-package-version/}{semantic version} (e.g., "0.2.1")}
 
 \item{title}{a character string that is a title of the data package for humans}
 
 \item{homepage}{a valid URL that links to a webpage with code or descriptions related to creation of the data package}
 
-\item{description}{a character string (markdown encouraged!) of more details about how the data was created, including the data sources,
-references to code or packages used, relevant details for any specific columns, and notes about (mis)usage of the data}
+\item{description}{a character string (markdown encouraged!) of more details
+about how the data was created, including the data sources,
+references to code or packages used, relevant details for any
+specific columns, and notes about (mis)usage of the data}
 }
 \value{
 a dpkg object
@@ -38,15 +42,9 @@ Convert a data frame into a data package (\code{dpkg}) by providing specific met
 this might not result in a valid \code{name} (e.g., when piping code to create a data frame)
 }
 \examples{
-as_dpkg(mtcars, name = "mtcars", title = "Motor Trend Road Car Tests")
-d <-
-  tibble::tibble(
-    id = labels(letters[1:5]),
-    letters = as_lbl_vec(letters[1:5], "The Alphabet"),
-    numbers = as_lbl_vec(1:5, "the numbers"),
-    logicals = as_lbl_vec(c(TRUE, TRUE, FALSE, TRUE, FALSE), "is foofy")
-  ) |>
-  as_lbl_tbl(d)
-d
-d$letters
+
+x <- as_dpkg(mtcars, name = "mtcars", title = "Motor Trend Road Car Tests")
+x@description <- "This is a data set all about characteristics of different cars"
+x@homepage <- "https://github.com/cole-brokamp/dpkg"
+x
 }

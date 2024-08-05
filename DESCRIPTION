@@ -18,6 +18,9 @@ Imports:
     cli,
     pillar,
     rlang,
+    fs,
+    prettyunits,
+    tibble,
     S7,
     httr2,
     nanoparquet

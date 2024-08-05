@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(lbl)
+library(dpkg)
 
-test_check("lbl")
+test_check("dpkg")
