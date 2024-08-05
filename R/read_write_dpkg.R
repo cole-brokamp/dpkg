@@ -11,8 +11,8 @@ read_dpkg_metadata <- function(x) {
     tibble::deframe() |>
     as.list()
   pmd$`ARROW:schema` <- NULL
-  pmd$created <- as.POSIXct(as.numeric(pmd$created))
-  pmd$`CoDEC:version` <- as.package_version(pmd$`CoDEC:version`)
+  pmd$created <- as.POSIXct(as.character(pmd$created))
+  pmd$version <- pmd$version
   pmd$columns_rtype <-
     nanoparquet::parquet_column_types(x)[, c("name", "r_type")] |>
     tibble::deframe()
@@ -32,14 +32,26 @@ read_dpkg <- function(x) {
   x_md <- read_dpkg_metadata(x)
   new_dpkg(
     nanoparquet::read_parquet(x),
-    name = x_md$`CoDEC:name`,
-    version = as.character(x_md$`CoDEC:version`),
-    title = x_md$`CoDEC:title`,
-    homepage = x_md$`CoDEC:homepage` %||% character()
+    name = x_md$name,
+    version = x_md$version,
+    title = x_md$title,
+    homepage = x_md$homepage,
+    description = x_md$description
   )
 }
 
 #' write dpkg to disk
-write_dpkg <- function(x) {
-
+#'
+#' @param x a data package (`dpkg`) object
+#' @param dir path to directory where dpkg parquet file will be written
+write_dpkg <- function(x, dir) {
+  if (!inherits(x, "dpkg::dpkg")) rlang::abort("x must be a `dpkg` object`")
+  out_path <- fs::path(dir, glue::glue("{x@name}_{x@version}"), ext = "parquet")
+  out_md <- c(
+    unlist(dpkg_meta(x)),
+    created = as.character(Sys.time()),
+    rlang_hash = rlang::hash(x)
+  )
+  nanoparquet::write_parquet(x, out_path, metadata = out_md)
+  return(invisible(out_path))
 }

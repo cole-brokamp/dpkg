@@ -4,7 +4,12 @@
 \alias{write_dpkg}
 \title{write dpkg to disk}
 \usage{
-write_dpkg(x)
+write_dpkg(x, dir)
+}
+\arguments{
+\item{x}{a data package (\code{dpkg}) object}
+
+\item{dir}{path to directory where dpkg parquet file will be written}
 }
 \description{
 write dpkg to disk
