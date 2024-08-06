@@ -47,7 +47,7 @@ read_dpkg <- function(x) {
 #' @returns path to the written file, invisibly
 write_dpkg <- function(x, dir) {
   if (!inherits(x, "dpkg::dpkg")) rlang::abort("x must be a `dpkg` object`")
-  out_path <- fs::path(dir, glue::glue("{x@name}_{x@version}"), ext = "parquet")
+  out_path <- fs::path(dir, glue::glue("{x@name}-v{x@version}"), ext = "parquet")
   out_md <- c(
     unlist(dpkg_meta(x)),
     created = as.character(Sys.time()),
