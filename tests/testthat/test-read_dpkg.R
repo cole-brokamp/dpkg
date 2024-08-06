@@ -21,11 +21,11 @@ test_that("read_dpkg() and read_dpkg_metadata() works", {
       name = "mtcars", version = "0.1.0", title = "Motor Trend Road Car Tests",
       homepage = "https://github.com/cole-brokamp/dpkg",
       description = "This is a data set all about characteristics of different cars",
-      rlang_hash = "0fe2d26c242a70a56f22d71838d27685",
+      hash = "388b3dadbc0845b5bd9854218c380878",
       columns_rtype = c(
         mpg = "double", cyl = "double", disp = "double",
         hp = "double", drat = "double", wt = "double", qsec = "double",
         vs = "double", am = "double", gear = "double", carb = "double"
-      ), file_size = "2.99 kB", num_rows = 32, num_cols = 11L
+      ), file_size = "2.98 kB", num_rows = 32, num_cols = 11L
     ))
 })

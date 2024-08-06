@@ -12,5 +12,5 @@ test_that("write_dpkg() works", {
   expect_identical(ncol(test_read), 11L)
 
   checking_md <- nanoparquet::parquet_metadata(out)$file_meta_data$key_value_metadata[[1]]
-  expect_true(all(c("name", "version", "title", "homepage", "description", "created", "rlang_hash") %in% checking_md$key))
+  expect_true(all(c("name", "version", "title", "homepage", "description", "created", "hash") %in% checking_md$key))
 })

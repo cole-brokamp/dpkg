@@ -5,8 +5,9 @@
 #' it will not be re-downloaded again, unless `force = TRUE`.
 #' Specify an alternative download location by setting the `R_USER_DATA_DIR`
 #' environment variable; see `?tools::R_user_dir`.
-#' @param x a URL starting with `http://` or `https://`
+#' @param url a URL string starting with `http://` or `https://`
 #' @param overwrite logical; overwrite stowed file with the same name?
+#' @export
 #' @examples
 #' Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
@@ -20,7 +21,7 @@ stow <- function(url, overwrite = FALSE) {
 
 #' get info about stowed files
 #'
-#' @param filename character filename to use in path; if NULL, then information about
+#' @param filename character filename of stowed file; if NULL, then information about
 #' *all* stowed files or the directory where files are stowed is returned
 #' @returns for `stow_info()`, a tibble of file or folder information;
 #' for `stow_path()`, a character path to the stowed file or stow directory;
@@ -49,7 +50,7 @@ stow_info <- function(filename = NULL) {
 }
 
 #' get the path to a stowed file (or the stow directory)
-#'
+#' @rdname stow_info
 #' @export
 stow_path <- function(filename = NULL) {
   the_path <- fs::path(tools::R_user_dir("stow", "data"))
@@ -73,6 +74,9 @@ stow_size <- function(filename = NULL) {
   sum(stow_info(filename)$size)
 }
 
+#' remove a stowed file (or the stow entire directory)
+#' @rdname stow_info
+#' @export
 stow_remove <- function(filename = NULL) {
   if (is.null(filename)) {
     message(stow_path(), " has a total size of ", stow_size())

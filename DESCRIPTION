@@ -15,7 +15,6 @@ Config/testthat/edition: 3
 URL: https://github.com/cole-brokamp/dpkg
 BugReports: https://github.com/cole-brokamp/dpkg/issues
 Imports: 
-    cli,
     rlang,
     glue,
     fs,

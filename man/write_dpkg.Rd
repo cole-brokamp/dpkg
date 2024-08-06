@@ -11,6 +11,9 @@ write_dpkg(x, dir)
 
 \item{dir}{path to directory where dpkg parquet file will be written}
 }
+\value{
+path to the written file, invisibly
+}
 \description{
 write dpkg to disk
 }

@@ -2,18 +2,24 @@
 % Please edit documentation in R/stow.R
 \name{stow_info}
 \alias{stow_info}
+\alias{stow_path}
 \alias{stow_exists}
 \alias{stow_size}
+\alias{stow_remove}
 \title{get info about stowed files}
 \usage{
 stow_info(filename = NULL)
 
+stow_path(filename = NULL)
+
 stow_exists(filename = NULL)
 
 stow_size(filename = NULL)
+
+stow_remove(filename = NULL)
 }
 \arguments{
-\item{filename}{character filename to use in path; if NULL, then information about
+\item{filename}{character filename of stowed file; if NULL, then information about
 \emph{all} stowed files or the directory where files are stowed is returned}
 }
 \value{
@@ -25,9 +31,13 @@ for \code{stow_size()}, a fs::
 \description{
 get info about stowed files
 
+get the path to a stowed file (or the stow directory)
+
 test if a stowed file (or the stow directory) exists
 
 get the size of a stowed file
+
+remove a stowed file (or the stow entire directory)
 }
 \examples{
 Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))

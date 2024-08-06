@@ -44,13 +44,14 @@ read_dpkg <- function(x) {
 #'
 #' @param x a data package (`dpkg`) object
 #' @param dir path to directory where dpkg parquet file will be written
+#' @returns path to the written file, invisibly
 write_dpkg <- function(x, dir) {
   if (!inherits(x, "dpkg::dpkg")) rlang::abort("x must be a `dpkg` object`")
   out_path <- fs::path(dir, glue::glue("{x@name}_{x@version}"), ext = "parquet")
   out_md <- c(
     unlist(dpkg_meta(x)),
     created = as.character(Sys.time()),
-    rlang_hash = rlang::hash(x)
+    hash = rlang::hash(as.data.frame(S7::S7_data(x)))
   )
   nanoparquet::write_parquet(x, out_path, metadata = out_md)
   return(invisible(out_path))

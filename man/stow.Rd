@@ -7,9 +7,9 @@
 stow(url, overwrite = FALSE)
 }
 \arguments{
-\item{overwrite}{logical; overwrite stowed file with the same name?}
+\item{url}{a URL string starting with \verb{http://} or \verb{https://}}
 
-\item{x}{a URL starting with \verb{http://} or \verb{https://}}
+\item{overwrite}{logical; overwrite stowed file with the same name?}
 }
 \description{
 Downloaded files are available across all of an R user’s sessions and projects.
