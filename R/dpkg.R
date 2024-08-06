@@ -62,15 +62,6 @@ prop_name <- S7::new_property(
 new_dpkg <- S7::new_class(
   name = "dpkg",
   parent = S7::class_data.frame,
-  ## parent = S7::new_S3_class(
-  ##   "tbl_df",
-  ##   function(.data = data.frame()) {
-  ##     tibble::as_tibble(.data)
-  ##   },
-  ##   function(self) {
-  ##     if (!tibble::is_tibble(self)) "underlying data must be a tbl_df"
-  ##   }
-  ## ),
   package = "dpkg",
   properties = list(
     name = prop_name,
@@ -89,17 +80,8 @@ new_dpkg <- S7::new_class(
 )
 
 S7::method(print, new_dpkg) <- function(x, ...) {
-  ## paste0("# ", cli::symbol$menu, " ", setup$name, " v", setup$version)
   cli::cli_text("# [{cli::symbol$menu}] {x@name} v{x@version}")
   cli::cli_text("# {cli::symbol$info} Use `dpkg_meta() to get all metadata")
-  ## cli::cli_div(theme = list(
-  ##   span.dpkg = list(color = "darkgrey"),
-  ##   "span.dpkg" = list(before = "- "),
-  ##   "span.dpkg" = list(after = "")))
-  ## if (length(x@title) > 0) cli::cli_text("{.dpkg title: {x@title}}")
-  ## if (length(x@homepage) > 0) cli::cli_text("{.dpkg homepage: {.url {x@homepage}}}")
-  ## if (length(x@description) > 0) cli::cli_text("{.dpkg description: {x@description}}")
-  ## cli::cli_end()
   print(tibble::as_tibble(x), ...)
 }
 

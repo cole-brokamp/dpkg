@@ -41,7 +41,7 @@ stow <- function(uri, overwrite = FALSE) {
     uri_parts <-
       strsplit(uri, "/", fixed = TRUE)[[1]][3:5] |>
       as.list() |>
-      setNames(c("owner", "repo", "dpkg"))
+      stats::setNames(c("owner", "repo", "dpkg"))
     out <-
       stow_gh_release(uri_parts$owner,
         repo = uri_parts$repo,
