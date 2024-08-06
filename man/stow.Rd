@@ -13,6 +13,9 @@ with \verb{http://}, \verb{https://}, or \verb{gh://}}
 \item{overwrite}{logical; re-download the remote file even though
 a local file with the same name exists?}
 }
+\value{
+path to the stowed file
+}
 \description{
 Stow a remote file locally, caching it across all of a user's
 R sessions and projects.
@@ -40,8 +43,10 @@ has already been downloaded once, it will not be re-downloaded again
 stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
 
 # will be faster (even in later R sessions) next time
-stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds") |>
+  readRDS()
 
 # get a data package parquet file created with dpkg_gh_release()
-stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000")
+stow("gh://cole-brokamp/dpkg/cagis_parcels-v0.1.0") |>
+  read_dpkg()
 }

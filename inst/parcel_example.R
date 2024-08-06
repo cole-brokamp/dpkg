@@ -1,20 +1,6 @@
-library(lbl)
+library(dpkg)
 library(dplyr, warn.conflicts = FALSE)
 library(sf)
-
-md <-
-  list(
-    name = "cagis_parcels",
-    title = "CAGIS Open Data Parcels",
-    version = "0.1.0",
-    description = paste(
-        "A tabular data resource derived from the Hamilton County, OH Auditor data distributed through [CAGIS Open Data](https://cagismaps.hamilton-co.org/cagisportal/mapdata/download) of parcel-level characteristics collected by Hamilton County.",
-        "Briefly, parcels were excluded if they were missing an identifier, missing an address number, missing an address street name, or were not considered to be residential.",
-        "Because 'second line' address components (e.g., 'Unit 2B') are not captured, a single address can refer to multiple parcels in the case of condos or otherwise shared building ownership.",
-        "Large apartment complexes often use multiple mailing addresses that are not the same as the parcel address(es).",
-        .sep = "\n"
-      )
-  )
 
 # download CAGIS OpenData Auditor geodatabase
 the_gdb <- fs::path(tools::R_user_dir("lbl_example", "cache"), "Parcels2024.gdb")
@@ -85,27 +71,13 @@ d <-
     sep = " ", na.rm = TRUE, remove = TRUE
   )
 
-# add metadata and updated labels
-out <-
-  d |>
-  as_lbl_tbl(!!!md) |>
-  update_labels(
-    parcel_address = "Derived by pasting `parcel_addr_{number, street, suffix}` together",
-    parcel_id = "Uniquely identifies parcels of land (i.e., auditor parcel number)",
-    land_use = "Parcel land usage code; distinct from city land use codes"
+d_dpkg <- d |>
+  as_dpkg(
+    name = "cagis_parcels",
+    title = "CAGIS Open Data Parcels",
+    version = "0.1.0",
+    homepage = "https://github.com/geomarker-io/parcel",
+    description = paste(readLines(fs::path_package("dpkg", "README.md")), collapse = "\n")
   )
 
-## login using profile sso account
-system2("aws", c("sso", "login", "--profile", "geomarker-io"))
-Sys.setenv("AWS_PROFILE" = "geomarker-io")
-
-codec_board <-
-  pins::board_s3(
-    bucket = "io.geomarker.codec",
-    versioned = FALSE,
-    prefix = "data/",
-    profile = "geomarker-io",
-    cache = tools::R_user_dir("io.geomarker.codec.data", "cache")
-  )
-
-pins::pin_write(codec_board, out, name = glue::glue("{attr(out, 'name')}_v{attr(out, 'version')}"), type = "rds")
+## dpkg_gh_release(d_dpkg, draft = FALSE)

@@ -48,7 +48,7 @@ dpkg_gh_release <- function(x, draft = TRUE) {
     httr2::req_body_file(written_path) |>
     httr2::req_perform()
 
-  message("created draft release at: ", draft_release_details$html_url)
+  message("created (draft) release at: ", draft_release_details$html_url)
   return(invisible(draft_release_details$html_url))
 }
 
@@ -79,6 +79,7 @@ get_gh_token <- function() {
 
 # stow a github release asset created with dpkg_github_release()
 # @examples
+# dpkg_gh_release(as_dpkg(mtcars))
 # stow_gh_release("cole-brokamp", "dpkg", "mtcars-v0.0.0.9000")
 # stow_gh_release("cole-brokamp", "dpkg", "mtcars-v0.0.0.9000", force = TRUE)
 stow_gh_release <- function(owner, repo, dpkg, overwrite = FALSE) {
@@ -110,13 +111,17 @@ stow_gh_release <- function(owner, repo, dpkg, overwrite = FALSE) {
 
   the_asset <- the_assets[[which(vapply(the_assets, \(.) .$name == paste0(dpkg, ".parquet"), logical(1)))]]
 
-  httr2::request(glue::glue("https://api.github.com/repos/{owner}/{repo}/releases/assets/{the_asset$id}")) |>
-    httr2::req_headers(
-      Accept = "application/vnd.github+json",
-      Authorization = glue::glue("Bearer {get_gh_token()}"),
-      `X-GitHub-Api-Version` = "2022-11-28",
-      .redact = "Authorization"
-    ) |>
-    httr2::req_perform(path = stow_path(dpkg_filename))
+  ## # why does getting file this way break the header of the parquet file??
+  ## httr2::request(glue::glue("https://api.github.com/repos/{owner}/{repo}/releases/assets/{the_asset$id}")) |>
+  ##   httr2::req_headers(
+  ##     Accept = "application/vnd.github+json",
+  ##     Authorization = glue::glue("Bearer {get_gh_token()}"),
+  ##     `X-GitHub-Api-Version` = "2022-11-28",
+  ##     .redact = "Authorization"
+  ##   ) |>
+  ##   httr2::req_perform(path = stow_path(dpkg_filename))
+
+  stow_url(the_asset$browser_download_url)
+  
   return(stow_path(dpkg_filename))
 }

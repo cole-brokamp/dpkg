@@ -22,16 +22,19 @@
 #' with `http://`, `https://`, or `gh://`
 #' @param overwrite logical; re-download the remote file even though
 #' a local file with the same name exists?
+#' @returns path to the stowed file
 #' @export
 #' @examples
 #' # get by using URL
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
 #'
 #' # will be faster (even in later R sessions) next time
-#' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+#' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds") |>
+#'   readRDS()
 #'
 #' # get a data package parquet file created with dpkg_gh_release()
-#' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000")
+#' stow("gh://cole-brokamp/dpkg/cagis_parcels-v0.1.0") |>
+#'   read_dpkg()
 stow <- function(uri, overwrite = FALSE) {
   if (grepl("^https?://", uri)) {
     out <- stow_url(url = uri, overwrite = overwrite)
@@ -63,7 +66,6 @@ stow <- function(uri, overwrite = FALSE) {
 #' stow_url("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
 stow_url <- function(url, overwrite = FALSE) {
   if (!grepl("^https?://", url)) rlang::abort("x must start with `http://` or `https://`")
-  fs::dir_create(stow_path())
   dest_path <- stow_path(fs::path_file(url))
   httr2::req_perform(httr2::request(url), path = dest_path)
   return(dest_path)
