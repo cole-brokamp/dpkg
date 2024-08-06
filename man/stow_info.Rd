@@ -16,11 +16,14 @@ stow_exists(filename = NULL)
 
 stow_size(filename = NULL)
 
-stow_remove(filename = NULL)
+stow_remove(filename = NULL, .delete_stow_dir_confirm = FALSE)
 }
 \arguments{
 \item{filename}{character filename of stowed file; if NULL, then information about
 \emph{all} stowed files or the directory where files are stowed is returned}
+
+\item{.delete_stow_dir_confirm}{set to TRUE in order to delete the entire stow directory without interactive
+user confirmation}
 }
 \value{
 for \code{stow_info()}, a tibble of file or folder information;

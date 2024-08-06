@@ -2,23 +2,46 @@
 % Please edit documentation in R/stow.R
 \name{stow}
 \alias{stow}
-\title{download a file to the \code{stow} R user directory}
+\title{stow}
 \usage{
-stow(url, overwrite = FALSE)
+stow(uri, overwrite = FALSE)
 }
 \arguments{
-\item{url}{a URL string starting with \verb{http://} or \verb{https://}}
+\item{uri}{character string universal resource identifier; currently, must begin
+with \verb{http://}, \verb{https://}, or \verb{gh://}}
 
-\item{overwrite}{logical; overwrite stowed file with the same name?}
+\item{overwrite}{logical; re-download the remote file even though
+a local file with the same name exists?}
 }
 \description{
-Downloaded files are available across all of an R user’s sessions and projects.
-If a file with the same name has already been downloaded once,
-it will not be re-downloaded again, unless \code{force = TRUE}.
+Stow a remote file locally, caching it across all of a user's
+R sessions and projects.
+}
+\details{
+Use stow to abstract away the process of downloading a file
+or a GitHub release asset to a user's data directory, only
+downloading files that have not already been downloaded.
+
+Supported URI prefixes include:
+\itemize{
+\item \verb{https://}, \verb{http://}: download from a file
+\item \verb{gh://}: download a github release asset, formatted as \verb{gh://owner/repo/name}
+}
+
+Stow downloads files to the users data directory; see \code{?tools::R_user_dir}.
 Specify an alternative download location by setting the \code{R_USER_DATA_DIR}
-environment variable; see \code{?tools::R_user_dir}.
+environment variable.
+The stow cache works by name only; that is, if a file with the same URI
+has already been downloaded once, it will not be re-downloaded again
+(unless \code{overwrite = TRUE}).
 }
 \examples{
-Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
+# get by using URL
 stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+
+# will be faster (even in later R sessions) next time
+stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+
+# get a data package parquet file created with dpkg_gh_release()
+stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000")
 }

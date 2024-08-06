@@ -1,17 +1,67 @@
+#' stow
+#'
+#' Stow a remote file locally, caching it across all of a user's
+#' R sessions and projects.
+#'
+#' Use stow to abstract away the process of downloading a file
+#' or a GitHub release asset to a user's data directory, only
+#' downloading files that have not already been downloaded.
+#'
+#' Supported URI prefixes include:
+#'
+#' - `https://`, `http://`: download from a file
+#' - `gh://`: download a github release asset, formatted as `gh://owner/repo/name`
+#'
+#' Stow downloads files to the users data directory; see `?tools::R_user_dir`.
+#' Specify an alternative download location by setting the `R_USER_DATA_DIR`
+#' environment variable.
+#' The stow cache works by name only; that is, if a file with the same URI
+#' has already been downloaded once, it will not be re-downloaded again
+#' (unless `overwrite = TRUE`).
+#' @param uri character string universal resource identifier; currently, must begin
+#' with `http://`, `https://`, or `gh://`
+#' @param overwrite logical; re-download the remote file even though
+#' a local file with the same name exists?
+#' @export
+#' @examples
+#' # get by using URL
+#' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+#'
+#' # will be faster (even in later R sessions) next time
+#' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+#'
+#' # get a data package parquet file created with dpkg_gh_release()
+#' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000")
+stow <- function(uri, overwrite = FALSE) {
+  if (grepl("^https?://", uri)) {
+    out <- stow_url(url = uri, overwrite = overwrite)
+    return(out)
+  }
+  if (grepl("^gh://", uri)) {
+    uri_parts <-
+      strsplit(uri, "/", fixed = TRUE)[[1]][3:5] |>
+      as.list() |>
+      setNames(c("owner", "repo", "dpkg"))
+    out <-
+      stow_gh_release(uri_parts$owner,
+        repo = uri_parts$repo,
+        dpkg = uri_parts$dpkg,
+        overwrite = overwrite
+      )
+    return(out)
+  }
+  rlang::abort("uri must begin with `https://`, or `http://`, or `gh://`")
+}
+
 #' download a file to the `stow` R user directory
 #'
-#' Downloaded files are available across all of an R user’s sessions and projects.
-#' If a file with the same name has already been downloaded once,
-#' it will not be re-downloaded again, unless `force = TRUE`.
-#' Specify an alternative download location by setting the `R_USER_DATA_DIR`
-#' environment variable; see `?tools::R_user_dir`.
 #' @param url a URL string starting with `http://` or `https://`
 #' @param overwrite logical; overwrite stowed file with the same name?
 #' @export
 #' @examples
 #' Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
-#' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
-stow <- function(url, overwrite = FALSE) {
+#' stow_url("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+stow_url <- function(url, overwrite = FALSE) {
   if (!grepl("^https?://", url)) rlang::abort("x must start with `http://` or `https://`")
   fs::dir_create(stow_path())
   dest_path <- stow_path(fs::path_file(url))
@@ -23,6 +73,8 @@ stow <- function(url, overwrite = FALSE) {
 #'
 #' @param filename character filename of stowed file; if NULL, then information about
 #' *all* stowed files or the directory where files are stowed is returned
+#' @param .delete_stow_dir_confirm set to TRUE in order to delete the entire stow directory without interactive
+#' user confirmation
 #' @returns for `stow_info()`, a tibble of file or folder information;
 #' for `stow_path()`, a character path to the stowed file or stow directory;
 #' for `stow_exists()`, a logical;
@@ -77,10 +129,11 @@ stow_size <- function(filename = NULL) {
 #' remove a stowed file (or the stow entire directory)
 #' @rdname stow_info
 #' @export
-stow_remove <- function(filename = NULL) {
+stow_remove <- function(filename = NULL, .delete_stow_dir_confirm = FALSE) {
   if (is.null(filename)) {
     message(stow_path(), " has a total size of ", stow_size())
-    answer <- utils::askYesNo("Are you sure you want to delete the entire stow directory?")
+    if (!.delete_stow_dir_confirm) answer <- utils::askYesNo("Are you sure you want to delete the entire stow directory?")
+    if (.delete_stow_dir_confirm) answer <- TRUE
     if (answer) fs::dir_delete(stow_path())
     return(invisible(NULL))
   }

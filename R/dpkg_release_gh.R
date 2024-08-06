@@ -77,13 +77,13 @@ get_gh_token <- function() {
   return(gh_token)
 }
 
-#' stow a github release asset created by dpkg_github_release()
+#' stow a github release asset created with dpkg_github_release()
 #' @examples
-#' stow_gh_release_asset("cole-brokamp", "dpkg", "mtcars-v0.0.0.9000")
-#' stow_gh_release_asset("cole-brokamp", "dpkg", "mtcars-v0.0.0.9000", force = TRUE)
-stow_gh_release_asset <- function(owner, repo, dpkg, force = FALSE) {
+#' stow_gh_release("cole-brokamp", "dpkg", "mtcars-v0.0.0.9000")
+#' stow_gh_release("cole-brokamp", "dpkg", "mtcars-v0.0.0.9000", force = TRUE)
+stow_gh_release <- function(owner, repo, dpkg, overwrite = FALSE) {
   dpkg_filename <- paste0(dpkg, ".parquet")
-  if (stow_exists(dpkg_filename) && !force) {
+  if (stow_exists(dpkg_filename) && !overwrite) {
     return(stow_path(dpkg_filename))
   }
   the_release <-
