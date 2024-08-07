@@ -1,0 +1,23 @@
+url: http://geomarker.io/codec
+template:
+  bootstrap: 5
+  bslib:
+    grid-gutter-width: "0.0rem"
+    border-radius: 0.5rem
+    btn-border-radius: 0.25rem
+reference:
+- title: using a dpkg
+  contents:
+  - dpkg_meta
+  - read_dpkg
+  - read_dpkg_metadata
+- title: creating a dpkg
+  contents:
+  - as_dpkg
+  - write_dpkg
+  - dpkg_gh_release
+- title: stow
+  contents:
+  - stow
+  - stow_info
+  - stow_gh_release

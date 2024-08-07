@@ -1,4 +1,4 @@
-#' read data package from an online location
+# read data package from an online location is a wrapper around stow() |> nanoparquet::read_parquet()  ???
 ## dpkg <- function()
 
 #' read metadata from dpkg on disk

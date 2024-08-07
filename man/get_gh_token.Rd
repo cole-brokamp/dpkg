@@ -13,3 +13,4 @@ get github token from GITHUB_PAT environment variable or use bundled token if un
 # withr::with_envvar(c(GITHUB_PAT = ""), get_gh_token())
 # get_gh_token()
 }
+\keyword{internal}

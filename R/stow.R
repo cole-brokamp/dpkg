@@ -1,7 +1,4 @@
-#' stow
-#'
-#' Stow a remote file locally, caching it across all of a user's
-#' R sessions and projects.
+#' stow a remote file locally, caching it for later use
 #'
 #' Use stow to abstract away the process of downloading a file
 #' or a GitHub release asset to a user's data directory, only
@@ -22,7 +19,7 @@
 #' with `http://`, `https://`, or `gh://`
 #' @param overwrite logical; re-download the remote file even though
 #' a local file with the same name exists?
-#' @returns path to the stowed file
+#' @returns path to the stowed file or url to github release
 #' @export
 #' @examples
 #' # get by using URL
@@ -35,6 +32,7 @@
 #' # get a data package parquet file created with dpkg_gh_release()
 #' stow("gh://cole-brokamp/dpkg/cagis_parcels-v0.1.0") |>
 #'   read_dpkg()
+#' 
 stow <- function(uri, overwrite = FALSE) {
   if (grepl("^https?://", uri)) {
     out <- stow_url(url = uri, overwrite = overwrite)
@@ -58,12 +56,9 @@ stow <- function(uri, overwrite = FALSE) {
 
 #' download a file to the `stow` R user directory
 #'
+#' @rdname stow
 #' @param url a URL string starting with `http://` or `https://`
-#' @param overwrite logical; overwrite stowed file with the same name?
 #' @export
-#' @examples
-#' Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
-#' stow_url("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
 stow_url <- function(url, overwrite = FALSE) {
   if (!grepl("^https?://", url)) rlang::abort("x must start with `http://` or `https://`")
   dest_path <- stow_path(fs::path_file(url))

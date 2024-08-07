@@ -2,8 +2,7 @@
 % Please edit documentation in R/read_write_dpkg.R
 \name{read_dpkg_metadata}
 \alias{read_dpkg_metadata}
-\title{read data package from an online location
-read metadata from dpkg on disk}
+\title{read metadata from dpkg on disk}
 \usage{
 read_dpkg_metadata(x)
 }
@@ -14,6 +13,5 @@ read_dpkg_metadata(x)
 a list of metadata collected from parquet_info and the key value metadata
 }
 \description{
-read data package from an online location
 read metadata from dpkg on disk
 }

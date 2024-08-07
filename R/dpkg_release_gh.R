@@ -53,6 +53,7 @@ dpkg_gh_release <- function(x, draft = TRUE) {
 }
 
 #' get github token from GITHUB_PAT environment variable or use bundled token if unset
+#' @keywords internal
 #' @examples
 #' # withr::with_envvar(c(GITHUB_PAT = ""), get_gh_token())
 #' # get_gh_token()
@@ -77,11 +78,12 @@ get_gh_token <- function() {
   return(gh_token)
 }
 
-# stow a github release asset created with dpkg_github_release()
-# @examples
-# dpkg_gh_release(as_dpkg(mtcars))
-# stow_gh_release("cole-brokamp", "dpkg", "mtcars-v0.0.0.9000")
-# stow_gh_release("cole-brokamp", "dpkg", "mtcars-v0.0.0.9000", force = TRUE)
+#' download a github release asset to the `stow` R user directory
+#' @param owner string of repo owner
+#' @param repo string of repo name
+#' @param dpkg string of gh release tag (will be the same as the filename without the `.parquet` extension)
+#' @rdname stow
+#' @export
 stow_gh_release <- function(owner, repo, dpkg, overwrite = FALSE) {
   dpkg_filename <- paste0(dpkg, ".parquet")
   if (stow_exists(dpkg_filename) && !overwrite) {
