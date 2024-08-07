@@ -45,6 +45,7 @@ read_dpkg <- function(x) {
 #' @param x a data package (`dpkg`) object
 #' @param dir path to directory where dpkg parquet file will be written
 #' @returns path to the written file, invisibly
+#' @export
 write_dpkg <- function(x, dir) {
   if (!inherits(x, "dpkg::dpkg")) rlang::abort("x must be a `dpkg` object`")
   out_path <- fs::path(dir, glue::glue("{x@name}-v{x@version}"), ext = "parquet")
