@@ -79,17 +79,26 @@ stow_url <- function(url, overwrite = FALSE) {
 #' @export
 #' @examples
 #' Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
+#'
 #' stow_path()
+#'
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+#'
 #' stow_path("nei_2020.rds")
+#'
 #' stow_exists("nei_2020.rds")
+#'
 #' stow_size("nei_2020.rds")
 #'
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2017.rds")
+#'
 #' stow_info("nei_2017.rds")
+#'
 #' stow_info()
+#'
 #' stow_size()
-#' stow_remove()
+#'
+#' stow_remove(.delete_stow_dir_confirm = TRUE)
 stow_info <- function(filename = NULL) {
   if (!stow_exists(filename)) rlang::abort("file or folder does not exist")
   if (is.null(filename)) {

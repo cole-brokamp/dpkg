@@ -17,7 +17,7 @@ stow_url(url, overwrite = FALSE)
 
 \item{repo}{string of repo name}
 
-\item{dpkg}{string of gh release asset \emph{and} file without the \code{.parquet} extension}
+\item{dpkg}{string of gh release tag (will be the same as the filename without the \code{.parquet} extension)}
 
 \item{overwrite}{logical; re-download the remote file even though
 a local file with the same name exists?}

@@ -1,9 +1,4 @@
-# read data package from an online location is a wrapper around stow() |> nanoparquet::read_parquet()  ???
-## dpkg <- function()
-
-#' read metadata from dpkg on disk
-#' @param x path to data package (`.parquet` file) on disk
-#' @returns a list of metadata collected from parquet_info and the key value metadata
+#' @rdname read_dpkg
 #' @export
 read_dpkg_metadata <- function(x) {
   pmd <-
@@ -23,10 +18,10 @@ read_dpkg_metadata <- function(x) {
   return(pmd)
 }
 
-#' read dpkg from disk
+#' read (meta)data from dpkg on disk
 #'
 #' @param x path to data package (`.parquet` file) on disk
-#' @returns a dpkg object
+#' @returns for `read_dpkg()`, a dpkg object; for `read_dpkg_metadata()`, a list of metadata
 #' @export
 read_dpkg <- function(x) {
   x_md <- read_dpkg_metadata(x)

@@ -44,15 +44,24 @@ remove a stowed file (or the stow entire directory)
 }
 \examples{
 Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
+
 stow_path()
+
 stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+
 stow_path("nei_2020.rds")
+
 stow_exists("nei_2020.rds")
+
 stow_size("nei_2020.rds")
 
 stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2017.rds")
+
 stow_info("nei_2017.rds")
+
 stow_info()
+
 stow_size()
-stow_remove()
+
+stow_remove(.delete_stow_dir_confirm = TRUE)
 }
