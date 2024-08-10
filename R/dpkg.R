@@ -59,6 +59,16 @@ prop_name <- S7::new_property(
   }
 )
 
+prop_url <- S7::new_property(
+  class = S7::class_character,
+  validator = function(value) {
+    if (length(value) > 1L) "must be length 1 (or 0)"
+    if (length(value) == 1 && !grepl("^((http|ftp)s?|sftp)://", value)) {
+      "homepage must be a valid http, https, or sftp URL"
+    }
+  }
+)
+
 new_dpkg <- S7::new_class(
   name = "dpkg",
   parent = S7::class_data.frame,
@@ -67,15 +77,11 @@ new_dpkg <- S7::new_class(
     name = prop_name,
     version = prop_label,
     title = prop_label_maybe,
-    homepage = prop_label_maybe,
+    homepage = prop_url,
     description = prop_label_maybe
   ),
   validator = function(self) {
-    if (length(self@homepage) == 1 && !grepl("^((http|ftp)s?|sftp)://", self@homepage)) {
-      "homepage must be a valid http, https, or sftp URL"
-    }
     if (!is.package_version(as.package_version(self@version))) "version should be coercable with `as.package_version()`"
-    check_name(self@name)
   }
 )
 
