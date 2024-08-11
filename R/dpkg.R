@@ -50,38 +50,27 @@ prop_label_maybe <- S7::new_property(
   }
 )
 
-prop_name <- S7::new_property(
-  class = S7::class_character,
-  validator = function(value) {
-    if (length(value) != 1L) "must be length 1"
-    if (!identical(tolower(value), value)) "name must be all lowercase"
-    if (grepl("[^a-zA-Z0-9._-]", value)) "name must only contain alphanumeric characters, except for `-`, `_`, and `.`"
-  }
-)
-
-prop_url <- S7::new_property(
-  class = S7::class_character,
-  validator = function(value) {
-    if (length(value) > 1L) "must be length 1 (or 0)"
-    if (length(value) == 1 && !grepl("^((http|ftp)s?|sftp)://", value)) {
-      "homepage must be a valid http, https, or sftp URL"
-    }
-  }
-)
-
 new_dpkg <- S7::new_class(
   name = "dpkg",
   parent = S7::class_data.frame,
   package = "dpkg",
   properties = list(
-    name = prop_name,
+    name = prop_label,
     version = prop_label,
     title = prop_label_maybe,
-    homepage = prop_url,
+    homepage = prop_label_maybe,
     description = prop_label_maybe
   ),
   validator = function(self) {
-    if (!is.package_version(as.package_version(self@version))) "version should be coercable with `as.package_version()`"
+    if (!is.package_version(as.package_version(self@version))) {
+      "@version should be coercable with `as.package_version()`"
+    } else if (!identical(tolower(self@name), self@name)) {
+      "@name must be all lowercase"
+    } else if (grepl("[^a-zA-Z0-9._-]", self@name)) {
+      "@name must only contain alphanumeric characters, except for `-`, `_`, and `.`"
+    } else if (length(self@homepage) == 1 && !grepl("^((http|ftp)s?|sftp)://", self@homepage)) {
+      "@homepage must be a valid http, https, or sftp URL"
+    }
   }
 )
 

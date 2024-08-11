@@ -1,21 +1,36 @@
 test_that("checking name property works", {
 
-  ## prop_name$validator("codec_traffic") |>
-  ##   expect_identical(NULL)
+  as_dpkg(mtcars, name = "mtcars", version = "0.a1.2") |>
+    expect_error("invalid version specification")
 
-  ## prop_name$validator("CoDEC_traffic")
+  as_dpkg(mtcars, name = c("my", "cars")) |>
+    expect_error("@name must be length 1")
 
-  ## prop_name$validator(1)
+  as_dpkg(mtcars, name = 1) |>
+    expect_error("@name must be <character>")
 
+  as_dpkg(mtcars, name = "Mtcars") |>
+    expect_error("@name must be all lowercase")
 
+  as_dpkg(mtcars, name = "my mtcars") |>
+    expect_error("@name must only contain alphanumeric")
+
+  as_dpkg(mtcars, name = "<foofy>") |>
+    expect_error("@name must only contain alphanumeric")
   
-  ## expect_no_condition(("codec_traffic"))
-  ## check_name("CoDEC_traffic") |>
-  ##   expect_equal("`name` must be all lowercase")
-  ## check_name(1) |>
-  ##   expect_equal("`name` must be a character string")
-  ## check_name("census data") |>
-  ##   expect_equal("`name` must not contain spaces")
-  ## check_name("census+data") |>
-  ##   expect_equal("`name` must only contain a-z, 0-9, -, _, .")
+  prop_label$validator("the_name") |>
+    expect_null()
+
+  prop_label$validator(c("a", "b")) |>
+    expect_identical("must be length 1")
+
+  prop_label_maybe$validator("the_name") |>
+    expect_null()
+
+  prop_label_maybe$validator(character()) |>
+    expect_null()
+
+  prop_label_maybe$validator(c("a", "b")) |>
+    expect_identical("must be length 1 (or 0)")
+
 })

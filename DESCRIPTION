@@ -26,5 +26,4 @@ Imports:
     S7,
     httr2,
     curl,
-    nanoparquet,
-    stringr
+    nanoparquet
