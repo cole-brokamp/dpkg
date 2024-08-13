@@ -80,6 +80,12 @@ S7::method(print, new_dpkg) <- function(x, ...) {
   print(tibble::as_tibble(x), ...)
 }
 
+# extract
+S7::method(`[`, new_dpkg) <- function(x, i, ...) {
+  d <- as.data.frame(S7::S7_data(x))
+  do.call(as_dpkg, c(list(d[i, ]), dpkg_meta(x)))
+}
+
 #' get the metadata associated with a data package
 #'
 #' @param x a dpkg object

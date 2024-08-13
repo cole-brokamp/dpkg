@@ -23,7 +23,13 @@ test_that("as_dpkg() works", {
 
   x[1, ] |>
     expect_s3_class("dpkg::dpkg")
-  
-  expect_snapshot(x[1, ])
 
+  x[1, ] |>
+    dpkg_meta() |>
+    expect_identical(list(
+      name = "mtcars", version = "0.0.0.9000", title = "Motor Trend Road Car Tests",
+      homepage = "https://github.com/cole-brokamp/dpkg", description = "This is a data set all about characteristics of different cars"
+    ))
+
+  expect_snapshot(x[1, ])
 })
