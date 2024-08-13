@@ -35,7 +35,7 @@ as_dpkg <- function(x, name = deparse(substitute(x)), version = "0.0.0.9000",
       rlang::abort("homepage must be a valid http, https, or sftp URL")
     }
     # TODO check for length one character vectors
-  tibble::new_tibble(x,
+  tibble::new_tibble(tibble::validate_tibble(x),
                      class = "dpkg",
                      name = name,
                      version = version,
