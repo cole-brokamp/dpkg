@@ -1,7 +1,7 @@
 test_that("write_dpkg() works", {
   d <- as_dpkg(mtcars, version = "0.1.0", title = "Motor Trend Road Car Tests")
-  d@description <- "This is a data set all about characteristics of different cars"
-  d@homepage <- "https://github.com/cole-brokamp/dpkg"
+  attr(d, "description") <- "This is a data set all about characteristics of different cars"
+  attr(d, "homepage") <- "https://github.com/cole-brokamp/dpkg"
 
   out <- write_dpkg(d, dir = tempdir())
   expect_true(fs::file_exists(out))

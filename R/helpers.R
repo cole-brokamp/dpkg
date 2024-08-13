@@ -1,5 +1,4 @@
 .onLoad <- function(...) {
-  S7::methods_register()
   fs::dir_create(stow_path())
 }
 

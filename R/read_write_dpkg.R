@@ -25,7 +25,7 @@ read_dpkg_metadata <- function(x) {
 #' @export
 read_dpkg <- function(x) {
   x_md <- read_dpkg_metadata(x)
-  new_dpkg(
+  as_dpkg(
     nanoparquet::read_parquet(x),
     name = x_md$name,
     version = x_md$version,
@@ -42,12 +42,12 @@ read_dpkg <- function(x) {
 #' @returns path to the written file, invisibly
 #' @export
 write_dpkg <- function(x, dir) {
-  if (!inherits(x, "dpkg::dpkg")) rlang::abort("x must be a `dpkg` object`")
-  out_path <- fs::path(dir, glue::glue("{x@name}-v{x@version}"), ext = "parquet")
+  if (!inherits(x, "dpkg")) rlang::abort("x must be a `dpkg` object`")
+  out_path <- fs::path(dir, glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"), ext = "parquet")
   out_md <- c(
     unlist(dpkg_meta(x)),
     created = as.character(Sys.time()),
-    hash = rlang::hash(as.data.frame(S7::S7_data(x)))
+    hash = rlang::hash(x)
   )
   nanoparquet::write_parquet(x, out_path, metadata = out_md)
   return(invisible(out_path))

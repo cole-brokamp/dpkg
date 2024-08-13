@@ -1,13 +1,13 @@
 test_that("read_dpkg() and read_dpkg_metadata() works", {
   d <- as_dpkg(mtcars, version = "0.1.0", title = "Motor Trend Road Car Tests")
-  d@description <- "This is a data set all about characteristics of different cars"
-  d@homepage <- "https://github.com/cole-brokamp/dpkg"
+  attr(d, "description") <- "This is a data set all about characteristics of different cars"
+  attr(d, "homepage") <- "https://github.com/cole-brokamp/dpkg"
 
   out <- write_dpkg(d, dir = tempdir())
 
   d_in <- read_dpkg(out)
 
-  expect_s3_class(d_in, "dpkg::dpkg")
+  expect_s3_class(d_in, "dpkg")
 
   expect_equal(d, d_in, ignore_attr = TRUE)
 
@@ -21,7 +21,7 @@ test_that("read_dpkg() and read_dpkg_metadata() works", {
       name = "mtcars", version = "0.1.0", title = "Motor Trend Road Car Tests",
       homepage = "https://github.com/cole-brokamp/dpkg",
       description = "This is a data set all about characteristics of different cars",
-      hash = "388b3dadbc0845b5bd9854218c380878",
+      hash = "502c9e71f62f79debf7e769e071df0b4",
       columns_rtype = c(
         mpg = "double", cyl = "double", disp = "double",
         hp = "double", drat = "double", wt = "double", qsec = "double",
