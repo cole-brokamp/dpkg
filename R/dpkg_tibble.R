@@ -25,23 +25,25 @@
 #' x
 as_dpkg <- function(x, name = deparse(substitute(x)), version = "0.0.0.9000",
                     title = character(), homepage = character(), description = character()) {
-    if (!is.package_version(as.package_version(version))) {
-      rlang::abort("version should be coercable with `as.package_version()`")
-    } else if (!identical(tolower(name), name)) {
-      rlang::abort("name must be all lowercase")
-    } else if (grepl("[^a-zA-Z0-9._-]", name)) {
-      rlang::abort("name must only contain alphanumeric characters, except for `-`, `_`, and `.`")
-    } else if (length(homepage) == 1 && !grepl("^((http|ftp)s?|sftp)://", homepage)) {
-      rlang::abort("homepage must be a valid http, https, or sftp URL")
-    }
-    # TODO check for length one character vectors
+  invisible(check_label(name, "name", required = TRUE))
+  invisible(check_label(version, "version", required = TRUE))
+  if (!is.package_version(as.package_version(version))) {
+    rlang::abort("version should be coercable with `as.package_version()`")
+  } else if (!identical(tolower(name), name)) {
+    rlang::abort("name must be all lowercase")
+  } else if (grepl("[^a-zA-Z0-9._-]", name)) {
+    rlang::abort("name must only contain alphanumeric characters, except for `-`, `_`, and `.`")
+  } else if (length(homepage) == 1 && !grepl("^((http|ftp)s?|sftp)://", homepage)) {
+    rlang::abort("homepage must be a valid http, https, or sftp URL")
+  }
   tibble::new_tibble(tibble::validate_tibble(x),
-                     class = "dpkg",
-                     name = name,
-                     version = version,
-                     title = title,
-                     homepage = homepage,
-                     description = description)
+    class = "dpkg",
+    name = check_label(name, "name", required = TRUE),
+    version = check_label(version, "version", required = TRUE),
+    title = check_label(title, "title", required = FALSE),
+    homepage = check_label(homepage, "homepage", required = FALSE),
+    description = description
+  )
 }
 
 #' @export
@@ -58,4 +60,15 @@ print.dpkg <- function(x, ...) {
 #' @export
 dpkg_meta <- function(x) {
   attributes(x)[c("name", "version", "title", "homepage", "description")]
+}
+
+check_label <- function(x, label_name, required = FALSE) {
+  if (!is.character(x)) {
+    rlang::abort(glue::glue("`{label_name}` must be <character>, not <{class(x)}>"))
+  } else if (required && length(x) != 1) {
+    rlang::abort(glue::glue("`{label_name}` must be length 1"))
+  } else if (length(x) > 1) {
+    rlang::abort(glue::glue("{label_name} must be length 1 (or 0)"))
+  }
+  return(x)
 }
