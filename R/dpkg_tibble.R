@@ -42,7 +42,7 @@ as_dpkg <- function(x, name = deparse(substitute(x)), version = "0.0.0.9000",
     version = check_label(version, "version", required = TRUE),
     title = check_label(title, "title", required = FALSE),
     homepage = check_label(homepage, "homepage", required = FALSE),
-    description = description
+    description = check_label(description, "description", required = FALSE)
   )
 }
 
