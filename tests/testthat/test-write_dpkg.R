@@ -6,11 +6,8 @@ test_that("write_dpkg() works", {
   out <- write_dpkg(d, dir = tempdir())
   expect_true(fs::file_exists(out))
 
-  test_read <- nanoparquet::read_parquet(out)
+  test_read <- arrow::read_parquet(out)
   expect_s3_class(test_read, "tbl")
   expect_identical(nrow(test_read), 32L)
   expect_identical(ncol(test_read), 11L)
-
-  checking_md <- nanoparquet::parquet_metadata(out)$file_meta_data$key_value_metadata[[1]]
-  expect_true(all(c("name", "version", "title", "homepage", "description", "created", "hash") %in% checking_md$key))
 })

@@ -18,3 +18,24 @@ for \code{read_dpkg()}, a dpkg object; for \code{read_dpkg_metadata()}, a list o
 \description{
 read (meta)data from dpkg on disk
 }
+\examples{
+
+d <- as_dpkg(mtcars, version = "0.1.0", title = "Motor Trend Road Car Tests")
+attr(d, "description") <- "This is a data set all about characteristics of different cars"
+attr(d, "homepage") <- "https://github.com/cole-brokamp/dpkg"
+
+write_dpkg(d, dir = tempdir()) |>
+  read_dpkg()
+
+# geo objects are supported via the `geoarrow_vctr` in the geoarrow package
+library(geoarrow)
+sf::read_sf(system.file("gpkg/nc.gpkg", package = "sf")) |>
+  as_dpkg(name = "nc_data") |>
+  write_dpkg(tempdir())
+d <- read_dpkg(fs::path_temp("nc_data-v0.0.0.9000.parquet"))
+d
+
+# as a simple features object
+d$geom <- sf::st_as_sfc(d$geom)
+sf::st_as_sf(d)
+}

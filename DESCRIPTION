@@ -8,13 +8,15 @@ Description: Data frame, tibble, or tbl objects are converted to data package ob
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: 
     testthat (>= 3.0.0),
     gert,
     gh,
     withr,
-    dplyr
+    dplyr,
+    geoarrow,
+    sf
 Config/testthat/edition: 3
 URL: https://github.com/cole-brokamp/dpkg, https://cole-brokamp.github.io/dpkg/
 BugReports: https://github.com/cole-brokamp/dpkg/issues
@@ -27,4 +29,4 @@ Imports:
     tibble,
     httr2,
     curl,
-    nanoparquet
+    arrow

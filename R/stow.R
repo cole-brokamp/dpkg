@@ -31,7 +31,7 @@
 #'
 #' # get a data package parquet file created with dpkg_gh_release()
 #' stow("gh://cole-brokamp/dpkg/cagis_parcels-v0.1.0") |>
-#'   read_dpkg()
+#'   arrow::read_parquet()
 #' 
 stow <- function(uri, overwrite = FALSE) {
   if (grepl("^https?://", uri)) {
