@@ -25,7 +25,6 @@ Imports:
     glue,
     fs,
     cli,
-    prettyunits,
     tibble,
     httr2,
     curl,

@@ -15,17 +15,23 @@ test_that("read_dpkg() and read_dpkg_metadata() works", {
   expect_identical(ncol(d_in), 11L)
 
   the_md <- read_dpkg_metadata(out)
+  expect_true(the_md$created < Sys.time())
   the_md$created <- NULL
   the_md |>
     expect_identical(
       list(
-        name = "mtcars", version = "0.1.0", title = "Motor Trend Road Car Tests",
-        homepage = "https://github.com/cole-brokamp/dpkg", description = "This is a data set all about characteristics of different cars",
-        hash = "502c9e71f62f79debf7e769e071df0b4", num_rows = 32L,
-        num_cols = 11L, fields = c(
+        name = "mtcars", version = "0.1.0",
+        title = "Motor Trend Road Car Tests",
+        homepage = "https://github.com/cole-brokamp/dpkg",
+        description = "This is a data set all about characteristics of different cars",
+        hash = "502c9e71f62f79debf7e769e071df0b4",
+        num_rows = 32L,
+        num_cols = 11L,
+        fields = c(
           "mpg", "cyl", "disp", "hp", "drat",
           "wt", "qsec", "vs", "am", "gear", "carb"
-        ), file_size = "7.42 kB"
+        ),
+        file_size = 7424L
       )
     )
 })
