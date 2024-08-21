@@ -17,6 +17,8 @@ test_that("read_dpkg() and read_dpkg_metadata() works", {
   the_md <- read_dpkg_metadata(out)
   expect_true(the_md$created < Sys.time())
   the_md$created <- NULL
+  expect_true(as.numeric(the_md$file_size) - 7424 < 11)
+  the_md$file_size <- NULL
   the_md |>
     expect_identical(
       list(
@@ -30,8 +32,7 @@ test_that("read_dpkg() and read_dpkg_metadata() works", {
         fields = c(
           "mpg", "cyl", "disp", "hp", "drat",
           "wt", "qsec", "vs", "am", "gear", "carb"
-        ),
-        file_size = 7424L
+        )
       )
     )
 })

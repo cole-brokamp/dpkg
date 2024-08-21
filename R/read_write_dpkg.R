@@ -13,7 +13,7 @@ read_dpkg_metadata <- function(x) {
   out$num_rows <- x_a$num_rows
   out$num_cols <- x_a$num_cols
   out$fields <- x_a$schema$names
-  out$file_size <- as.integer(fs::file_size(x))
+  out$file_size <- fs::file_size(x)
   return(out)
 }
 
