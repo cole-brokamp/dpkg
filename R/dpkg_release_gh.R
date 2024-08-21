@@ -22,8 +22,8 @@ dpkg_gh_release <- function(x, draft = TRUE) {
   draft_release_details <-
     gh::gh(
       glue::glue("POST /repos/{gh_owner}/{gh_repo}/releases"),
-      name = glue::glue("{x@name} {x@version}"),
-      tag_name = glue::glue("{x@name}-v{x@version}"),
+      name = glue::glue("{attr(x, 'name')} {attr(x, 'version')}"),
+      tag_name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"),
       target_commitish = gert::git_info()$commit,
       draft = draft
     )
@@ -44,7 +44,7 @@ dpkg_gh_release <- function(x, draft = TRUE) {
   written_path <- write_dpkg(x, tempdir())
 
   put_asset_req |>
-    httr2::req_url_query(name = glue::glue("{x@name}-v{x@version}.parquet")) |>
+    httr2::req_url_query(name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}.parquet")) |>
     httr2::req_body_file(written_path) |>
     httr2::req_perform()
 
