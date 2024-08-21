@@ -123,9 +123,7 @@ has already been downloaded once, it will not be re-downloaded again
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># get a data package parquet file created with dpkg_gh_release()</span></span></span>
 <span class="r-in"><span><span class="fu">stow</span><span class="op">(</span><span class="st">"gh://cole-brokamp/dpkg/cagis_parcels-v0.1.0"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="read_dpkg.html">read_dpkg</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> # [☰] cagis_parcels v0.1.0</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> # ℹ Use `dpkg_meta() to get all metadata</span>
+<span class="r-in"><span>  <span class="fu">arrow</span><span class="fu">::</span><span class="fu"><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">read_parquet</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 259,710 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    parcel_id     parcel_address  land_use condo_id condo_unit market_total_value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
