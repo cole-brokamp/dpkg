@@ -59,6 +59,6 @@ stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds
 
 # get a data package parquet file created with dpkg_gh_release()
 stow("gh://cole-brokamp/dpkg/cagis_parcels-v0.1.0") |>
-  read_dpkg()
+  arrow::read_parquet()
 
 }

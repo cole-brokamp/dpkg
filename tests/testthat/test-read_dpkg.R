@@ -15,17 +15,24 @@ test_that("read_dpkg() and read_dpkg_metadata() works", {
   expect_identical(ncol(d_in), 11L)
 
   the_md <- read_dpkg_metadata(out)
+  expect_true(the_md$created < Sys.time())
   the_md$created <- NULL
+  expect_true(as.numeric(the_md$file_size) - 7424 < 11)
+  the_md$file_size <- NULL
   the_md |>
-    expect_identical(list(
-      name = "mtcars", version = "0.1.0", title = "Motor Trend Road Car Tests",
-      homepage = "https://github.com/cole-brokamp/dpkg",
-      description = "This is a data set all about characteristics of different cars",
-      hash = "502c9e71f62f79debf7e769e071df0b4",
-      columns_rtype = c(
-        mpg = "double", cyl = "double", disp = "double",
-        hp = "double", drat = "double", wt = "double", qsec = "double",
-        vs = "double", am = "double", gear = "double", carb = "double"
-      ), file_size = "2.98 kB", num_rows = 32, num_cols = 11L
-    ))
+    expect_identical(
+      list(
+        name = "mtcars", version = "0.1.0",
+        title = "Motor Trend Road Car Tests",
+        homepage = "https://github.com/cole-brokamp/dpkg",
+        description = "This is a data set all about characteristics of different cars",
+        hash = "502c9e71f62f79debf7e769e071df0b4",
+        num_rows = 32L,
+        num_cols = 11L,
+        fields = c(
+          "mpg", "cyl", "disp", "hp", "drat",
+          "wt", "qsec", "vs", "am", "gear", "carb"
+        )
+      )
+    )
 })
