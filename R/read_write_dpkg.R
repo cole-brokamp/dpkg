@@ -39,9 +39,12 @@ read_dpkg_metadata <- function(x) {
 #' d <- read_dpkg(fs::path_temp("nc_data-v0.0.0.9000.parquet"))
 #' d
 #'
-#' # as a simple features object
+#' # as a simple features collection
 #' d$geom <- sf::st_as_sfc(d$geom)
 #' sf::st_as_sf(d)
+#'
+#' # read just the metadata
+#' read_dpkg_metadata(fs::path_temp("nc_data-v0.0.0.9000.parquet"))
 read_dpkg <- function(x) {
   invisible(read_dpkg_metadata(x))
   out <- arrow::read_parquet(x)
