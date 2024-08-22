@@ -15,3 +15,12 @@ a list of metadata key value pairs
 \description{
 get the metadata associated with a data package
 }
+\examples{
+
+x <- as_dpkg(mtcars, name = "mtcars", title = "Motor Trend Road Car Tests")
+attr(x, "description") <- "This is a data set all about characteristics of different cars"
+attr(x, "homepage") <- "https://github.com/cole-brokamp/dpkg"
+x
+
+dpkg_meta(x)
+}

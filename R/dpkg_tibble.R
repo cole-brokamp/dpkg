@@ -64,6 +64,14 @@ print.dpkg <- function(x, ...) {
 #' @param x a dpkg object
 #' @returns a list of metadata key value pairs
 #' @export
+#' @examples
+#'
+#' x <- as_dpkg(mtcars, name = "mtcars", title = "Motor Trend Road Car Tests")
+#' attr(x, "description") <- "This is a data set all about characteristics of different cars"
+#' attr(x, "homepage") <- "https://github.com/cole-brokamp/dpkg"
+#' x
+#' 
+#' dpkg_meta(x)
 dpkg_meta <- function(x) {
   attributes(x)[c("name", "version", "title", "homepage", "description")]
 }
