@@ -10,22 +10,21 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Suggests: 
-    testthat (>= 3.0.0),
-    gert,
-    gh,
-    withr,
     dplyr,
     geoarrow,
-    sf
+    gert,
+    gh,
+    sf,
+    testthat (>= 3.0.0),
+    withr
 Config/testthat/edition: 3
 URL: https://github.com/cole-brokamp/dpkg, https://cole-brokamp.github.io/dpkg/
 BugReports: https://github.com/cole-brokamp/dpkg/issues
 Imports: 
-    rlang,
-    glue,
-    fs,
+    arrow,
     cli,
-    tibble,
+    fs,
+    glue,
     httr2,
-    curl,
-    arrow
+    rlang,
+    tibble
