@@ -51,14 +51,15 @@ has already been downloaded once, it will not be re-downloaded again
 }
 \examples{
 # get by using URL
-stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
+stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds",
+     overwrite = TRUE)
 
 # will be faster (even in later R sessions) next time
 stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds") |>
   readRDS()
 
 # get a data package parquet file created with dpkg_gh_release()
-stow("gh://cole-brokamp/dpkg/cagis_parcels-v0.1.0") |>
+stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000", overwrite = TRUE) |>
   arrow::read_parquet()
 
 }
