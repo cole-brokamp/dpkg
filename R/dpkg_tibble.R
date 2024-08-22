@@ -48,7 +48,13 @@ as_dpkg <- function(x, name = deparse(substitute(x)), version = "0.0.0.9000",
 
 #' @export
 print.dpkg <- function(x, ...) {
-  cli::cli_text("# [{cli::symbol$menu}] {attr(x, 'name')} v{attr(x, 'version')}")
+  cli::cli_text("# [{cli::symbol$menu}] {attr(x, 'name')}-v{attr(x, 'version')}")
+  if (length(attr(x, "title") > 0)) {
+    cli::cli_text("# title: \"{attr(x, 'title')}\" ")
+  }
+  if (length(attr(x, "homepage") > 0)) {
+    cli::cli_text("# homepage: {attr(x, 'homepage')} ")
+  }
   cli::cli_text("# {cli::symbol$info} Use `dpkg_meta() to get all metadata")
   print(tibble::as_tibble(x), ...)
 }
