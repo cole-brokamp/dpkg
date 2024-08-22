@@ -11,12 +11,20 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' dpkg_gh_release(as_dpkg(mtcars, version = "0.0.0.9000", title = "Foofy Cars",
-#' homepage = "https://github.com/cole-brokamp/dpkg",
-#' description = "# Foofy Cars\n\nThis is a test release for the [dpkg](https://github.com/cole-brokamp/dpkg) package."),
-#' draft = FALSE)
-#' }
-dpkg_gh_release <- function(x, draft = TRUE) {
+#' dpkg_gh_release(
+#'   as_dpkg(mtcars,
+#'     version = "0.0.0.9000", title = "Foofy Cars",
+#'     homepage = "https://github.com/cole-brokamp/dpkg",
+#'     description =
+#'       paste("# Foofy Cars\n",
+#'         "This is a test for the [dpkg](https://github.com/cole-brokamp/dpkg) package.",
+#'         collapse = "\n"
+#'       )
+#'   ),
+#'   draft = FALSE
+#' )
+## }
+dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
   rlang::check_installed("gert", "get current git commit")
   rlang::check_installed("gh", "create a release on github")
   gh_owner <- gh::gh_tree_remote()$username
@@ -53,7 +61,7 @@ dpkg_gh_release <- function(x, draft = TRUE) {
     httr2::req_body_file(written_path) |>
     httr2::req_perform()
 
-  message("created (draft) release at: ", draft_release_details$html_url)
+  message(glue::glue("created {ifelse(draft, 'draft release', 'release')} at: {draft_release_details$html_url}"))
   return(invisible(draft_release_details$html_url))
 }
 
@@ -129,6 +137,6 @@ stow_gh_release <- function(owner, repo, dpkg, overwrite = FALSE) {
   ##   httr2::req_perform(path = stow_path(dpkg_filename))
 
   stow_url(the_asset$browser_download_url)
-  
+
   return(stow_path(dpkg_filename))
 }
