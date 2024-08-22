@@ -11,7 +11,9 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' dpkg_gh_release(as_dpkg(mtcars))
+#' dpkg_gh_release(as_dpkg(mtcars, version = "0.0.0.9000", title = "Foofy Cars",
+#' homepage = "https://github.com/cole-brokamp/dpkg",
+#' description = "# Foofy Cars\n\nThis is a test release for the [dpkg](https://github.com/cole-brokamp/dpkg) package."))
 #' }
 dpkg_gh_release <- function(x, draft = TRUE) {
   rlang::check_installed("gert", "get current git commit")
@@ -25,6 +27,8 @@ dpkg_gh_release <- function(x, draft = TRUE) {
       name = glue::glue("{attr(x, 'name')} {attr(x, 'version')}"),
       tag_name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"),
       target_commitish = gert::git_info()$commit,
+      generate_release_notes = TRUE,
+      body = attr(x, "description"),
       draft = draft
     )
   gh_release_id <- draft_release_details$id

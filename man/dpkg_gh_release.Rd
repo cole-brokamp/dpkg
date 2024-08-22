@@ -23,6 +23,8 @@ Trying to create more than one release from the current commit will result in an
 }
 \examples{
 \dontrun{
-dpkg_gh_release(as_dpkg(mtcars))
+dpkg_gh_release(as_dpkg(mtcars, version = "0.0.0.9000", title = "Foofy Cars",
+homepage = "https://github.com/cole-brokamp/dpkg",
+description = "# Foofy Cars\n\nThis is a test release for the [dpkg](https://github.com/cole-brokamp/dpkg) package."))
 }
 }
