@@ -13,7 +13,8 @@
 #' \dontrun{
 #' dpkg_gh_release(as_dpkg(mtcars, version = "0.0.0.9000", title = "Foofy Cars",
 #' homepage = "https://github.com/cole-brokamp/dpkg",
-#' description = "# Foofy Cars\n\nThis is a test release for the [dpkg](https://github.com/cole-brokamp/dpkg) package."))
+#' description = "# Foofy Cars\n\nThis is a test release for the [dpkg](https://github.com/cole-brokamp/dpkg) package."),
+#' draft = FALSE)
 #' }
 dpkg_gh_release <- function(x, draft = TRUE) {
   rlang::check_installed("gert", "get current git commit")
