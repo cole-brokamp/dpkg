@@ -4,6 +4,8 @@
       x[1, ]
     Message
       # [=] mtcars-v0.0.0.9000
+      # title: "Motor Trend Road Car Tests"
+      # homepage: https://github.com/cole-brokamp/dpkg
       # i Use `dpkg_meta() to get all metadata
     Output
       # A tibble: 1 x 11
