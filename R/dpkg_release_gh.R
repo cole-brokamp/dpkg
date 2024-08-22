@@ -7,6 +7,7 @@
 #' Trying to create more than one release from the current commit will result in an error.
 #' @param x a data package (`dpkg`) object
 #' @param draft logical; mark release as draft?
+#' @param generate_release_notes logical; include GitHub's auto-generated release notes below the description in the release body?
 #' @return the URL to the release (invisibly)
 #' @export
 #' @examples
@@ -23,7 +24,9 @@
 #'   ),
 #'   draft = FALSE
 #' )
-## }
+#' }
+#' #> created release at: https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9000
+#' 
 dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
   rlang::check_installed("gert", "get current git commit")
   rlang::check_installed("gh", "create a release on github")
@@ -36,7 +39,7 @@ dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
       name = glue::glue("{attr(x, 'name')} {attr(x, 'version')}"),
       tag_name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"),
       target_commitish = gert::git_info()$commit,
-      generate_release_notes = TRUE,
+      generate_release_notes = generate_release_notes,
       body = attr(x, "description"),
       draft = draft
     )

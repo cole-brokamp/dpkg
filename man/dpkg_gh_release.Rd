@@ -4,12 +4,14 @@
 \alias{dpkg_gh_release}
 \title{Use a dpkg to create a github release}
 \usage{
-dpkg_gh_release(x, draft = TRUE)
+dpkg_gh_release(x, draft = TRUE, generate_release_notes = FALSE)
 }
 \arguments{
 \item{x}{a data package (\code{dpkg}) object}
 
 \item{draft}{logical; mark release as draft?}
+
+\item{generate_release_notes}{logical; include GitHub's auto-generated release notes below the description in the release body?}
 }
 \value{
 the URL to the release (invisibly)
@@ -23,8 +25,19 @@ Trying to create more than one release from the current commit will result in an
 }
 \examples{
 \dontrun{
-dpkg_gh_release(as_dpkg(mtcars, version = "0.0.0.9000", title = "Foofy Cars",
-homepage = "https://github.com/cole-brokamp/dpkg",
-description = "# Foofy Cars\n\nThis is a test release for the [dpkg](https://github.com/cole-brokamp/dpkg) package."))
+dpkg_gh_release(
+  as_dpkg(mtcars,
+    version = "0.0.0.9000", title = "Foofy Cars",
+    homepage = "https://github.com/cole-brokamp/dpkg",
+    description =
+      paste("# Foofy Cars\n",
+        "This is a test for the [dpkg](https://github.com/cole-brokamp/dpkg) package.",
+        collapse = "\n"
+      )
+  ),
+  draft = FALSE
+)
 }
+#> created release at: https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9000
+
 }
