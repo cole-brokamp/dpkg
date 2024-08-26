@@ -16,6 +16,7 @@ reference:
   - as_dpkg
   - write_dpkg
   - dpkg_gh_release
+  - dpkg_badge
 - title: stow
   contents:
   - stow

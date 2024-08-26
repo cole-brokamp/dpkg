@@ -2,6 +2,7 @@
 
 S3method(print,dpkg)
 export(as_dpkg)
+export(dpkg_badge)
 export(dpkg_gh_release)
 export(dpkg_meta)
 export(read_dpkg)

@@ -26,7 +26,7 @@
 #' )
 #' }
 #' #> created release at: https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9000
-#' 
+#'
 dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
   rlang::check_installed("gert", "get current git commit")
   rlang::check_installed("gh", "create a release on github")
@@ -36,7 +36,7 @@ dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
   draft_release_details <-
     gh::gh(
       glue::glue("POST /repos/{gh_owner}/{gh_repo}/releases"),
-      name = glue::glue("{attr(x, 'name')} {attr(x, 'version')}"),
+      name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"),
       tag_name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"),
       target_commitish = gert::git_info()$commit,
       generate_release_notes = generate_release_notes,
@@ -66,6 +66,37 @@ dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
 
   message(glue::glue("created {ifelse(draft, 'draft release', 'release')} at: {draft_release_details$html_url}"))
   return(invisible(draft_release_details$html_url))
+}
+
+#' create readme badge for a dpkg github release
+#'
+#' The badge relies on shields.io for the images, which will always
+#' point to the most recently released version.
+#' Note that this relies on the structure of the release created with
+#' dpkg_gh_release().
+#' @param release_url the url of a github release (as returned by `dpkg_gh_release()`)
+#' @returns character string of markdown
+#' @export
+#' @examples
+#' release_url <- "https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9000"
+#' dpkg_badge(release_url)
+#' dpkg_badge("https://github.com/geomarker-io/parcel/releases/tag/property_code_enforcements-v1.0.0")
+#' dpkg_badge("https://github.com/geomarker-io/parcel/releases/tag/cagis_parcels-v1.1.0")
+#' dpkg_badge("https://github.com/geomarker-io/parcel/releases/tag/auditor_online_parcels-v0.2.0")
+dpkg_badge <- function(release_url) {
+  release <- httr2::url_parse(release_url)$path
+  r <- strsplit(release, "/", fixed = TRUE)[[1]]
+  glue::glue(
+    "[",
+    "![](",
+    "https://img.shields.io/github/v/release/",
+    "{r[[2]]}/{r[[3]]}",
+    "?sort=date&filter=",
+    strsplit(r[[6]], "-v", fixed = TRUE)[[1]][1],
+    "-*",
+    "&display_name=tag&label=%5B%E2%98%B0%5D&labelColor=%238CB4C3&color=%23396175)",
+    "]({release_url})"
+  )
 }
 
 #' get github token from GITHUB_PAT environment variable or use bundled token if unset
