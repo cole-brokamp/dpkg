@@ -28,6 +28,7 @@
 #' #> created release at: https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9000
 #'
 dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
+  if (!inherits(x, "dpkg")) rlang::abort("x must be a `dpkg` object`")
   rlang::check_installed("gert", "get current git commit")
   rlang::check_installed("gh", "create a release on github")
   gh_owner <- gh::gh_tree_remote()$username
@@ -68,35 +69,53 @@ dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
   return(invisible(draft_release_details$html_url))
 }
 
-#' create readme badge for a dpkg github release
+#' Use a markdown badge for a dpkg's latest github release
 #'
 #' The badge relies on shields.io for the images, which will always
-#' point to the most recently released version.
+#' display to the most recently released version and will link to the
+#' releases specific to the dpkg name.
+#'
 #' Note that this relies on the structure of the release created with
-#' dpkg_gh_release().
-#' @param release_url the url of a github release (as returned by `dpkg_gh_release()`)
+#' `dpkg_gh_release()`, but relies on a dpkg object *before* it is released.
+#' This will lead to broken release badges and links until an initial
+#' dpkg release is created with `dpkg_gh_release()`.
+#' @param x a data package (`dpkg`) object
 #' @returns character string of markdown
 #' @export
 #' @examples
-#' release_url <- "https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9000"
-#' dpkg_badge(release_url)
-#' dpkg_badge("https://github.com/geomarker-io/parcel/releases/tag/property_code_enforcements-v1.0.0")
-#' dpkg_badge("https://github.com/geomarker-io/parcel/releases/tag/cagis_parcels-v1.1.0")
-#' dpkg_badge("https://github.com/geomarker-io/parcel/releases/tag/auditor_online_parcels-v0.2.0")
-dpkg_badge <- function(release_url) {
-  release <- httr2::url_parse(release_url)$path
-  r <- strsplit(release, "/", fixed = TRUE)[[1]]
-  glue::glue(
-    "[",
-    "![](",
+#' \dontrun{
+#' as_dpkg(mtcars,
+#'   version = "0.0.0.9000", title = "Foofy Cars",
+#'   homepage = "https://github.com/cole-brokamp/dpkg",
+#'   description =
+#'     paste("# Foofy Cars\n",
+#'       "This is a test for the [dpkg](https://github.com/cole-brokamp/dpkg) package.",
+#'       collapse = "\n"
+#'     )
+#' ) |>
+#'   use_dpkg_badge()
+#' }
+#'
+#' #> ✔ Adding latest github release for mtcars dpkg badge to 'README.md'
+use_dpkg_badge <- function(x) {
+  if (!inherits(x, "dpkg")) rlang::abort("x must be a `dpkg` object`")
+  rlang::check_installed("gert", "get current git commit")
+  rlang::check_installed("gh", "create a release on github")
+  gh_owner <- gh::gh_tree_remote()$username
+  gh_repo <- gh::gh_tree_remote()$repo
+
+  badge_src <- glue::glue(
     "https://img.shields.io/github/v/release/",
-    "{r[[2]]}/{r[[3]]}",
-    "?sort=date&filter=",
-    strsplit(r[[6]], "-v", fixed = TRUE)[[1]][1],
-    "-*",
-    "&display_name=tag&label=%5B%E2%98%B0%5D&labelColor=%238CB4C3&color=%23396175)",
-    "]({release_url})"
+    "{gh_owner}/{gh_repo}",
+    "?sort=date&filter={attr(x, 'name')}-*",
+    "&display_name=tag",
+    "&label=%5B%E2%98%B0%5D&labelColor=%238CB4C3&color=%23396175)"
   )
+  badge_href <- glue::glue("https://github.com/{gh_owner}/{gh_repo}/releases?q={attr(x, 'name')}&expanded=false")
+  rlang::check_installed("usethis", "insert markdown badges into README")
+  usethis::use_badge(glue::glue("latest github release for {attr(x, 'name')} dpkg"),
+                     href = badge_href, src = badge_src)
+  return(invisible(glue::glue("[![]({badge_src})](badge_href)")))
 }
 
 #' get github token from GITHUB_PAT environment variable or use bundled token if unset
@@ -159,16 +178,6 @@ stow_gh_release <- function(owner, repo, dpkg, overwrite = FALSE) {
     httr2::resp_body_json()
 
   the_asset <- the_assets[[which(vapply(the_assets, \(.) .$name == paste0(dpkg, ".parquet"), logical(1)))]]
-
-  ## # why does getting file this way break the header of the parquet file??
-  ## httr2::request(glue::glue("https://api.github.com/repos/{owner}/{repo}/releases/assets/{the_asset$id}")) |>
-  ##   httr2::req_headers(
-  ##     Accept = "application/vnd.github+json",
-  ##     Authorization = glue::glue("Bearer {get_gh_token()}"),
-  ##     `X-GitHub-Api-Version` = "2022-11-28",
-  ##     .redact = "Authorization"
-  ##   ) |>
-  ##   httr2::req_perform(path = stow_path(dpkg_filename))
 
   stow_url(the_asset$browser_download_url)
 
