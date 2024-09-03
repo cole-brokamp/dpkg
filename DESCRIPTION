@@ -1,6 +1,6 @@
 Package: dpkg
 Title: Create, Stow, and Read Data Packages
-Version: 0.4.0.9100
+Version: 0.5.0
 Authors@R: 
     person("Cole", "Brokamp", , "cole@colebrokamp.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0289-3151"))
