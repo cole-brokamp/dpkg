@@ -109,7 +109,7 @@ use_dpkg_badge <- function(x) {
     "{gh_owner}/{gh_repo}",
     "?sort=date&filter={attr(x, 'name')}-*",
     "&display_name=tag",
-    "&label=%5B%E2%98%B0%5D&labelColor=%238CB4C3&color=%23396175)"
+    "&label=%5B%E2%98%B0%5D&labelColor=%238CB4C3&color=%23396175"
   )
   badge_href <- glue::glue("https://github.com/{gh_owner}/{gh_repo}/releases?q={attr(x, 'name')}&expanded=false")
   rlang::check_installed("usethis", "insert markdown badges into README")
