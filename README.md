@@ -1,10 +1,12 @@
 # dpkg
 
+<!-- badges: start -->
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/dpkg)](https://CRAN.R-project.org/package=dpkg)
 [![R-CMD-check](https://github.com/cole-brokamp/dpkg/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cole-brokamp/dpkg/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
 Data package (`dpkg`) is an R package used to create, stow, and read data packages.
 Data packages are data frame, tibble, or tbl objects with specific metadata labels (name, version, title, homepage, description).
