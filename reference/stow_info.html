@@ -36,7 +36,7 @@ remove a stowed file (or the stow entire directory)"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>get info about stowed files</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cole-brokamp/dpkg/blob/main/R/stow.R" class="external-link"><code>R/stow.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cole-brokamp/dpkg/blob/v0.5.1/R/stow.R" class="external-link"><code>R/stow.R</code></a></small>
       <div class="d-none name"><code>stow_info.Rd</code></div>
     </div>
 
@@ -88,13 +88,13 @@ for <code>stow_size()</code>, a fs::</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>R_USER_DATA_DIR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"stow"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">stow_path</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp3jh6sp/stow1a7629cf508b/R/stow</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">/tmp/RtmplxIYlQ/stow1b2015d3e46e/R/stow</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stow.html">stow</a></span><span class="op">(</span><span class="st">"https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/Rtmp3jh6sp/stow1a7629cf508b/R/stow/nei_2020.rds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/RtmplxIYlQ/stow1b2015d3e46e/R/stow/nei_2020.rds</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">stow_path</span><span class="op">(</span><span class="st">"nei_2020.rds"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/Rtmp3jh6sp/stow1a7629cf508b/R/stow/nei_2020.rds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/RtmplxIYlQ/stow1b2015d3e46e/R/stow/nei_2020.rds</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">stow_exists</span><span class="op">(</span><span class="st">"nei_2020.rds"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
@@ -103,13 +103,13 @@ for <code>stow_size()</code>, a fs::</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.75M</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stow.html">stow</a></span><span class="op">(</span><span class="st">"https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2017.rds"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/Rtmp3jh6sp/stow1a7629cf508b/R/stow/nei_2017.rds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /tmp/RtmplxIYlQ/stow1b2015d3e46e/R/stow/nei_2017.rds</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">stow_info</span><span class="op">(</span><span class="st">"nei_2017.rds"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 18</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   path         type   size permissions modification_time   user  group device_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fs::path&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fs:&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fs::perms&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> …ei_2017.rds file  2.67M rw-r--r--   2024-09-03 <span style="color: #949494;">22:08:58</span> runn… dock…      <span style="text-decoration: underline;">2</span>049</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> …ei_2017.rds file  2.67M rw-r--r--   2024-09-03 <span style="color: #949494;">22:10:41</span> runn… dock…      <span style="text-decoration: underline;">2</span>049</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 10 more variables: hard_links &lt;dbl&gt;, special_device_id &lt;dbl&gt;, inode &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   block_size &lt;dbl&gt;, blocks &lt;dbl&gt;, flags &lt;int&gt;, generation &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   access_time &lt;dttm&gt;, change_time &lt;dttm&gt;, birth_time &lt;dttm&gt;</span></span>
@@ -118,8 +118,8 @@ for <code>stow_size()</code>, a fs::</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 18</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   path         type   size permissions modification_time   user  group device_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fs::path&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fs:&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fs::perms&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> …ei_2017.rds file  2.67M rw-r--r--   2024-09-03 <span style="color: #949494;">22:08:58</span> runn… dock…      <span style="text-decoration: underline;">2</span>049</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> …ei_2020.rds file  2.75M rw-r--r--   2024-09-03 <span style="color: #949494;">22:08:58</span> runn… dock…      <span style="text-decoration: underline;">2</span>049</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> …ei_2017.rds file  2.67M rw-r--r--   2024-09-03 <span style="color: #949494;">22:10:41</span> runn… dock…      <span style="text-decoration: underline;">2</span>049</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> …ei_2020.rds file  2.75M rw-r--r--   2024-09-03 <span style="color: #949494;">22:10:41</span> runn… dock…      <span style="text-decoration: underline;">2</span>049</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 10 more variables: hard_links &lt;dbl&gt;, special_device_id &lt;dbl&gt;, inode &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   block_size &lt;dbl&gt;, blocks &lt;dbl&gt;, flags &lt;int&gt;, generation &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   access_time &lt;dttm&gt;, change_time &lt;dttm&gt;, birth_time &lt;dttm&gt;</span></span>
@@ -128,7 +128,7 @@ for <code>stow_size()</code>, a fs::</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5.42M</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">stow_remove</span><span class="op">(</span>.delete_stow_dir_confirm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/Rtmp3jh6sp/stow1a7629cf508b/R/stow has a total size of 5.42M</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> /tmp/RtmplxIYlQ/stow1b2015d3e46e/R/stow has a total size of 5.42M</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
