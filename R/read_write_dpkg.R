@@ -3,7 +3,7 @@
 read_dpkg_metadata <- function(x) {
   x_a <- arrow::open_dataset(x)
   if (length(x_a$metadata$r$attributes$class) == 0) {
-    rlang::abort("parquet file does not appear to contain an R object")
+    rlang::abort("parquet file does not contain R specific metadata created when saving with the arrow package")
   }
   if (!"dpkg" %in% x_a$metadata$r$attributes$class) {
     rlang::abort("R object in the parquet file must be class 'dpkg'")
