@@ -50,16 +50,21 @@ has already been downloaded once, it will not be re-downloaded again
 (unless \code{overwrite = TRUE}).
 }
 \examples{
+Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
 # get by using URL
 stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds",
-     overwrite = TRUE)
+     overwrite = TRUE) |>
+  readRDS()
 
 # will be faster (even in later R sessions) next time
 stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds") |>
   readRDS()
 
-# get a data package parquet file created with dpkg_gh_release()
+# get a data package from a GitHub release
 stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000", overwrite = TRUE) |>
+  arrow::read_parquet()
+
+stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000") |>
   arrow::read_parquet()
 
 }
