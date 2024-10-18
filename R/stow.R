@@ -22,16 +22,21 @@
 #' @returns path to the stowed file or url to github release
 #' @export
 #' @examples
+#' Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
 #' # get by using URL
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds",
-#'      overwrite = TRUE)
+#'      overwrite = TRUE) |>
+#'   readRDS()
 #'
 #' # will be faster (even in later R sessions) next time
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds") |>
 #'   readRDS()
 #'
-#' # get a data package parquet file created with dpkg_gh_release()
+#' # get a data package from a GitHub release
 #' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000", overwrite = TRUE) |>
+#'   arrow::read_parquet()
+#' 
+#' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000") |>
 #'   arrow::read_parquet()
 #' 
 stow <- function(uri, overwrite = FALSE) {
@@ -63,6 +68,9 @@ stow <- function(uri, overwrite = FALSE) {
 stow_url <- function(url, overwrite = FALSE) {
   if (!grepl("^https?://", url)) rlang::abort("x must start with `http://` or `https://`")
   dest_path <- stow_path(fs::path_file(url))
+  if (fs::file_exists(dest_path) && !overwrite) {
+    return(dest_path)
+  }
   httr2::req_perform(httr2::request(url), path = dest_path)
   return(dest_path)
 }
