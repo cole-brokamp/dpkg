@@ -146,8 +146,10 @@ stow_size <- function(filename = NULL) {
 #' @export
 stow_remove <- function(filename = NULL, .delete_stow_dir_confirm = FALSE) {
   if (is.null(filename)) {
-    message(stow_path(), " has a total size of ", stow_size())
-    if (!.delete_stow_dir_confirm) answer <- utils::askYesNo("Are you sure you want to delete the entire stow directory?")
+    if (!.delete_stow_dir_confirm) {
+      message(stow_path(), " has a total size of ", stow_size())
+      answer <- utils::askYesNo("Are you sure you want to delete the entire stow directory?")
+    }
     if (.delete_stow_dir_confirm) answer <- TRUE
     if (answer) fs::dir_delete(stow_path())
     return(invisible(NULL))
