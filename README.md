@@ -8,10 +8,7 @@ status](https://www.r-pkg.org/badges/version/dpkg)](https://CRAN.R-project.org/p
 [![R-CMD-check](https://github.com/cole-brokamp/dpkg/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cole-brokamp/dpkg/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-Data package (`dpkg`) is an R package used to create, stow, and read data packages.
-Data packages are data frame, tibble, or tbl objects with specific metadata labels (name, version, title, homepage, description).
-A data package object (`dpkg`) can be written to disk as a 'parquet' file and uploaded to a 'Amazon Web Service' (AWS) 'Simple Storage Service' (S3) bucket or to a 'GitHub' release to share with others.
-Data package objects can be read into R from online repositories and the downloaded 'parquet' files are cached locally in the R user data directory.
+Description: Data frame, tibble, or tbl objects are converted to data package objects using specific metadata labels (name, version, title, homepage, description). A data package object (`dpkg`) can be written to disk as a 'parquet' file or released to a 'GitHub' repository. Data package objects can be read into R from online repositories and downloaded files are cached locally across R sessions.
 
 ## Installation
 
