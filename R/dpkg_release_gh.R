@@ -96,7 +96,6 @@ dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
 #'   use_dpkg_badge()
 #' }
 #'
-#' #> ✔ Adding latest github release for mtcars dpkg badge to 'README.md'
 use_dpkg_badge <- function(x) {
   if (!inherits(x, "dpkg")) rlang::abort("x must be a `dpkg` object`")
   rlang::check_installed("gert", "get current git commit")

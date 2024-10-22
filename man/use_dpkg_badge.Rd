@@ -37,5 +37,4 @@ as_dpkg(mtcars,
   use_dpkg_badge()
 }
 
-#> ✔ Adding latest github release for mtcars dpkg badge to 'README.md'
 }
