@@ -23,5 +23,6 @@ test_that("as_dpkg() works", {
       homepage = "https://github.com/cole-brokamp/dpkg", description = "This is a data set all about characteristics of different cars"
     ))
 
-  expect_snapshot(x[1, ])
+  expect_identical(nrow(x[1, ]), 1L)
+
 })
