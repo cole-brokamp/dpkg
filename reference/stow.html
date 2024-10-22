@@ -99,10 +99,25 @@ has already been downloaded once, it will not be re-downloaded again
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># get by using URL</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>R_USER_DATA_DIR <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"stow"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># get by using URL</span></span></span>
 <span class="r-in"><span><span class="fu">stow</span><span class="op">(</span><span class="st">"https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds"</span>,</span></span>
-<span class="r-in"><span>     overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> /home/runner/.local/share/R/stow/nei_2020.rds</span>
+<span class="r-in"><span>     overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 369,063 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    pollutant_code total_emissions emissions_uom s2            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;s2_cell&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> EC                  0.001<span style="text-decoration: underline;">37</span>    TON           -3.419770e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> NO3                 0          TON           -3.419770e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> OC                  0.031<span style="text-decoration: underline;">7</span>     TON           -3.419770e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> PM25-PRI            0.782      TON           -3.419770e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> PMFINE              0.746      TON           -3.419770e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> SO4                 0.002<span style="text-decoration: underline;">78</span>    TON           -3.419770e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> EC                  0.000<span style="text-decoration: underline;">018</span>2  TON           -3.355024e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> NO3                 0.000<span style="text-decoration: underline;">006</span>38 TON           -3.355024e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> OC                  0.000<span style="text-decoration: underline;">129</span>   TON           -3.355024e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> PM25-PRI            0.000<span style="text-decoration: underline;">7</span>     TON           -3.355024e-306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 369,053 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># will be faster (even in later R sessions) next time</span></span></span>
 <span class="r-in"><span><span class="fu">stow</span><span class="op">(</span><span class="st">"https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
@@ -122,8 +137,29 @@ has already been downloaded once, it will not be re-downloaded again
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> PM25-PRI            0.000<span style="text-decoration: underline;">7</span>     TON           -3.355024e-306</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 369,053 more rows</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># get a data package parquet file created with dpkg_gh_release()</span></span></span>
+<span class="r-in"><span><span class="co"># get a data package from a GitHub release</span></span></span>
 <span class="r-in"><span><span class="fu">stow</span><span class="op">(</span><span class="st">"gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000"</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">arrow</span><span class="fu">::</span><span class="fu"><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">read_parquet</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> # [☰] mtcars-v0.0.0.9000</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> # title: "Foofy Cars"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> # homepage: https://github.com/cole-brokamp/dpkg</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> # ℹ Use `dpkg_meta() to get all metadata</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 32 × 11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>  21       6  160    110  3.9   2.62  16.5     0     1     4     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>  21       6  160    110  3.9   2.88  17.0     0     1     4     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>  24.4     4  147.    62  3.69  3.19  20       1     0     4     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 22 more rows</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">stow</span><span class="op">(</span><span class="st">"gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">arrow</span><span class="fu">::</span><span class="fu"><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">read_parquet</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> # [☰] mtcars-v0.0.0.9000</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> # title: "Foofy Cars"</span>
