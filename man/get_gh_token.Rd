@@ -9,8 +9,4 @@ get_gh_token()
 \description{
 get github token from GITHUB_PAT environment variable or use bundled token if unset
 }
-\examples{
-# withr::with_envvar(c(GITHUB_PAT = ""), get_gh_token())
-# get_gh_token()
-}
 \keyword{internal}

@@ -119,9 +119,6 @@ use_dpkg_badge <- function(x) {
 
 #' get github token from GITHUB_PAT environment variable or use bundled token if unset
 #' @keywords internal
-#' @examples
-#' # withr::with_envvar(c(GITHUB_PAT = ""), get_gh_token())
-#' # get_gh_token()
 get_gh_token <- function() {
   gh_token <- Sys.getenv("GITHUB_PAT")
   if (gh_token == "") {

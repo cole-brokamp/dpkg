@@ -4,7 +4,7 @@ Version: 0.6.0
 Authors@R: 
     person("Cole", "Brokamp", , "cole@colebrokamp.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-0289-3151"))
-Description: Data frame, tibble, or tbl objects are converted to data package objects using specific metadata labels (name, version, title, homepage, description). A data package object (`dpkg`) can be written to disk as a 'parquet' file or released to a 'GitHub' repository. Data package objects can be read into R from online repositories and downloaded files are cached locally across R sessions.
+Description: Data frame, tibble, or tbl objects are converted to data package objects using specific metadata labels (name, version, title, homepage, description). A data package object ('dpkg') can be written to disk as a 'parquet' file or released to a 'GitHub' repository. Data package objects can be read into R from online repositories and downloaded files are cached locally across R sessions.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
