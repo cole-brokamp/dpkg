@@ -1,3 +1,5 @@
+# dpkg (development version)
+
 # dpkg 0.6.0
 
 - Initial CRAN release.
