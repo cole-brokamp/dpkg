@@ -1,4 +1,6 @@
-# dpkg (development version)
+# dpkg 0.6.1
+
+- dpkg github releases are no longer set to be the "latest" release
 
 # dpkg 0.6.0
 
