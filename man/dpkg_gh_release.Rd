@@ -4,30 +4,37 @@
 \alias{dpkg_gh_release}
 \title{Use a dpkg to create a github release}
 \usage{
-dpkg_gh_release(x, draft = TRUE, generate_release_notes = FALSE)
+dpkg_gh_release(x, draft = TRUE)
 }
 \arguments{
 \item{x}{a data package (\code{dpkg}) object}
 
 \item{draft}{logical; mark release as draft?}
-
-\item{generate_release_notes}{logical; include GitHub's auto-generated release notes below the description in the release body?}
 }
 \value{
 the URL to the release (invisibly)
 }
 \description{
-The release will be tagged at the current commit and
-named according to the \code{name} and \code{version} of the dpkg.
+A GitHub release will be created based on the current commit,
+tagged and named according to the \code{name} and \code{version} of the dpkg.
+The dpkg \code{description} is used for the release body.
+}
+\details{
 The \code{GITHUB_PAT} environment variable must be set and the working directory
 must be inside of a git repository with a GitHub remote.
-Trying to create more than one release from the current commit will result in an error.
+
+The GitHub release will \emph{not} be set to the latest release in order to prevent
+problems with other automated actions that rely on the latest release, like
+R universe or remotes \code{"*release"} syntax or other GitHub actions.
+
+Release tags are required to be unique, so this will fail if a release with the same
+name and version already exists.
 }
 \examples{
 \dontrun{
 dpkg_gh_release(
   as_dpkg(mtcars,
-    version = "0.0.0.9000", title = "Foofy Cars",
+    version = "0.0.0.9001", title = "Foofy Cars",
     homepage = "https://github.com/cole-brokamp/dpkg",
     description =
       paste("# Foofy Cars\n",
@@ -38,6 +45,6 @@ dpkg_gh_release(
   draft = FALSE
 )
 }
-#> created release at: https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9000
+#> created release at: https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9001
 
 }
