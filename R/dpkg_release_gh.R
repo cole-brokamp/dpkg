@@ -1,20 +1,28 @@
 #' Use a dpkg to create a github release
 #'
-#' The release will be tagged at the current commit and
-#' named according to the `name` and `version` of the dpkg.
+#' A GitHub release will be created based on the current commit,
+#' tagged and named according to the `name` and `version` of the dpkg.
+#' The dpkg `description` is used for the release body.
+#'
+#' @details
 #' The `GITHUB_PAT` environment variable must be set and the working directory
 #' must be inside of a git repository with a GitHub remote.
-#' Trying to create more than one release from the current commit will result in an error.
+#'
+#' The GitHub release will *not* be set to the latest release in order to prevent
+#' problems with other automated actions that rely on the latest release, like
+#' R universe or remotes `"*release"` syntax or other GitHub actions.
+#' 
+#' Release tags are required to be unique, so this will fail if a release with the same
+#' name and version already exists.
 #' @param x a data package (`dpkg`) object
 #' @param draft logical; mark release as draft?
-#' @param generate_release_notes logical; include GitHub's auto-generated release notes below the description in the release body?
 #' @return the URL to the release (invisibly)
 #' @export
 #' @examples
 #' \dontrun{
 #' dpkg_gh_release(
 #'   as_dpkg(mtcars,
-#'     version = "0.0.0.9000", title = "Foofy Cars",
+#'     version = "0.0.0.9001", title = "Foofy Cars",
 #'     homepage = "https://github.com/cole-brokamp/dpkg",
 #'     description =
 #'       paste("# Foofy Cars\n",
@@ -25,9 +33,9 @@
 #'   draft = FALSE
 #' )
 #' }
-#' #> created release at: https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9000
+#' #> created release at: https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9001
 #'
-dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
+dpkg_gh_release <- function(x, draft = TRUE) {
   if (!inherits(x, "dpkg")) rlang::abort("x must be a `dpkg` object`")
   rlang::check_installed("gert", "get current git commit")
   rlang::check_installed("gh", "create a release on github")
@@ -40,9 +48,10 @@ dpkg_gh_release <- function(x, draft = TRUE, generate_release_notes = FALSE) {
       name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"),
       tag_name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"),
       target_commitish = gert::git_info()$commit,
-      generate_release_notes = generate_release_notes,
+      generate_release_notes = FALSE,
       body = attr(x, "description"),
-      draft = draft
+      draft = draft,
+      make_latest = "false"
     )
   gh_release_id <- draft_release_details$id
 
