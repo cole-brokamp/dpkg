@@ -16,7 +16,7 @@
 #' has already been downloaded once, it will not be re-downloaded again
 #' (unless `overwrite = TRUE`).
 #' @param uri character string universal resource identifier; currently, must begin
-#' with `http://`, `https://`, or `gh://`
+#' with `http://`, `https://`, `ftp://`, or `gh://`
 #' @param overwrite logical; re-download the remote file even though
 #' a local file with the same name exists?
 #' @returns path to the stowed file or url to github release
@@ -38,9 +38,12 @@
 #' 
 #' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000") |>
 #'   arrow::read_parquet()
+#'
+#' # use FTP protocol
+#' stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/COUNTY/tl_2024_us_county.zip")
 #' 
 stow <- function(uri, overwrite = FALSE) {
-  if (grepl("^https?://", uri)) {
+  if (grepl("^https?://", uri) || grepl("^ftp://", uri)) {
     out <- stow_url(url = uri, overwrite = overwrite)
     return(out)
   }
@@ -63,10 +66,14 @@ stow <- function(uri, overwrite = FALSE) {
 #' download a file to the `stow` R user directory
 #'
 #' @rdname stow
-#' @param url a URL string starting with `http://` or `https://`
+#' @param url a URL string starting with `http://`, `https://`, or `ftp://`
 #' @export
 stow_url <- function(url, overwrite = FALSE) {
-  if (!grepl("^https?://", url)) rlang::abort("x must start with `http://` or `https://`")
+  if (!grepl("^https?://", url)) {
+    if (!grepl("^ftp://", url)) {
+      rlang::abort("x must start with `http://` or `https://`")
+    }
+  }
   dest_path <- stow_path(fs::path_file(url))
   if (fs::file_exists(dest_path) && !overwrite) {
     return(dest_path)

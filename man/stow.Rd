@@ -23,9 +23,9 @@ stow_url(url, overwrite = FALSE)
 a local file with the same name exists?}
 
 \item{uri}{character string universal resource identifier; currently, must begin
-with \verb{http://}, \verb{https://}, or \verb{gh://}}
+with \verb{http://}, \verb{https://}, \verb{ftp://}, or \verb{gh://}}
 
-\item{url}{a URL string starting with \verb{http://} or \verb{https://}}
+\item{url}{a URL string starting with \verb{http://}, \verb{https://}, or \verb{ftp://}}
 }
 \value{
 path to the stowed file or url to github release
@@ -53,7 +53,8 @@ has already been downloaded once, it will not be re-downloaded again
 Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
 # get by using URL
 stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds",
-     overwrite = TRUE) |>
+     overwrite = TRUE
+) |>
   readRDS()
 
 # will be faster (even in later R sessions) next time
@@ -66,5 +67,8 @@ stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000", overwrite = TRUE) |>
 
 stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000") |>
   arrow::read_parquet()
+
+# use FTP protocol
+stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/COUNTY/tl_2024_us_county.zip")
 
 }

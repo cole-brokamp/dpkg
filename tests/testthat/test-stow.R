@@ -10,6 +10,9 @@ test_that("stow_info() and friends work", {
   stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds") |>
     expect_identical(stow_path("nei_2020.rds"))
 
+  stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/COUNTY/tl_2024_us_county.zip") |>
+    expect_identical(stow_path("tl_2024_us_county.zip"))
+
   stow_size("nei_2020.rds") |>
     expect_identical(structure(2883974, class = c("fs_bytes", "numeric")))
 
