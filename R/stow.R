@@ -25,7 +25,8 @@
 #' Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
 #' # get by using URL
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds",
-#'      overwrite = TRUE) |>
+#'      overwrite = TRUE
+#' ) |>
 #'   readRDS()
 #'
 #' # will be faster (even in later R sessions) next time
@@ -35,13 +36,13 @@
 #' # get a data package from a GitHub release
 #' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000", overwrite = TRUE) |>
 #'   arrow::read_parquet()
-#' 
+#'
 #' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000") |>
 #'   arrow::read_parquet()
 #'
 #' # use FTP protocol
 #' stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/COUNTY/tl_2024_us_county.zip")
-#' 
+#'
 stow <- function(uri, overwrite = FALSE) {
   if (grepl("^https?://", uri) || grepl("^ftp://", uri)) {
     out <- stow_url(url = uri, overwrite = overwrite)
@@ -78,7 +79,13 @@ stow_url <- function(url, overwrite = FALSE) {
   if (fs::file_exists(dest_path) && !overwrite) {
     return(dest_path)
   }
-  httr2::req_perform(httr2::request(url), path = dest_path)
+  tf <- tempfile()
+  on.exit(file.remove(tf))
+  ## httr2::request(url) |>
+  ##   httr2::req_options(verbose = TRUE) |>
+  ##   httr2::req_perform(path = dest_path)
+  download.file(url, tf, method = "libcurl")
+  file.copy(tf, dest_path)
   return(dest_path)
 }
 
