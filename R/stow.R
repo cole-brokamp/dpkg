@@ -25,7 +25,7 @@
 #' Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
 #' # get by using URL
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds",
-#'      overwrite = TRUE
+#'   overwrite = TRUE
 #' ) |>
 #'   readRDS()
 #'
@@ -41,8 +41,7 @@
 #'   arrow::read_parquet()
 #'
 #' # use FTP protocol
-#' stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/COUNTY/tl_2024_us_county.zip")
-#'
+#' stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/ADDR/tl_2024_39061_addr.zip")
 stow <- function(uri, overwrite = FALSE) {
   if (grepl("^https?://", uri) || grepl("^ftp://", uri)) {
     out <- stow_url(url = uri, overwrite = overwrite)
@@ -61,7 +60,7 @@ stow <- function(uri, overwrite = FALSE) {
       )
     return(out)
   }
-  rlang::abort("uri must begin with `https://`, or `http://`, or `gh://`")
+  rlang::abort("uri must begin with `https://`, `http://`, `ftp://`, or `gh://`")
 }
 
 #' download a file to the `stow` R user directory
@@ -72,21 +71,18 @@ stow <- function(uri, overwrite = FALSE) {
 stow_url <- function(url, overwrite = FALSE) {
   if (!grepl("^https?://", url)) {
     if (!grepl("^ftp://", url)) {
-      rlang::abort("x must start with `http://` or `https://`")
+      rlang::abort("x must start with `http://`, `https://`, or `ftp://`")
     }
   }
   dest_path <- stow_path(fs::path_file(url))
-  if (fs::file_exists(dest_path) && !overwrite) {
-    return(dest_path)
+  if (!fs::file_exists(dest_path) || overwrite) {
+    tf <- tempfile()
+    on.exit(file.remove(tf))
+    utils::download.file(url, tf)
+    file.copy(tf, dest_path)
   }
-  tf <- tempfile()
-  on.exit(file.remove(tf))
-  ## httr2::request(url) |>
-  ##   httr2::req_options(verbose = TRUE) |>
-  ##   httr2::req_perform(path = dest_path)
-  download.file(url, tf, method = "libcurl")
-  file.copy(tf, dest_path)
-  return(dest_path)
+  out <- as.character(dest_path)
+  return(out)
 }
 
 #' get info about stowed files
@@ -137,7 +133,7 @@ stow_path <- function(filename = NULL) {
   the_path <- fs::path(tools::R_user_dir("stow", "data"))
   fs::dir_create(the_path)
   if (!is.null(filename)) the_path <- fs::path(the_path, filename)
-  return(the_path)
+  return(as.character(the_path))
 }
 
 #' test if a stowed file (or the stow directory) exists
