@@ -23,8 +23,14 @@
 #' attr(x, "description") <- "This is a data set all about characteristics of different cars"
 #' attr(x, "homepage") <- "https://github.com/cole-brokamp/dpkg"
 #' x
-as_dpkg <- function(x, name = deparse(substitute(x)), version = "0.0.0.9000",
-                    title = character(), homepage = character(), description = character()) {
+as_dpkg <- function(
+  x,
+  name = deparse(substitute(x)),
+  version = "0.0.0.9000",
+  title = character(),
+  homepage = character(),
+  description = character()
+) {
   invisible(check_label(name, "name", required = TRUE))
   invisible(check_label(version, "version", required = TRUE))
   if (!is.package_version(as.package_version(version))) {
@@ -32,11 +38,16 @@ as_dpkg <- function(x, name = deparse(substitute(x)), version = "0.0.0.9000",
   } else if (!identical(tolower(name), name)) {
     rlang::abort("name must be all lowercase")
   } else if (grepl("[^a-zA-Z0-9._-]", name)) {
-    rlang::abort("name must only contain alphanumeric characters, except for `-`, `_`, and `.`")
-  } else if (length(homepage) == 1 && !grepl("^((http|ftp)s?|sftp)://", homepage)) {
+    rlang::abort(
+      "name must only contain alphanumeric characters, except for `-`, `_`, and `.`"
+    )
+  } else if (
+    length(homepage) == 1 && !grepl("^((http|ftp)s?|sftp)://", homepage)
+  ) {
     rlang::abort("homepage must be a valid http, https, or sftp URL")
   }
-  tibble::new_tibble(tibble::validate_tibble(x),
+  tibble::new_tibble(
+    tibble::validate_tibble(x),
     class = "dpkg",
     name = check_label(name, "name", required = TRUE),
     version = check_label(version, "version", required = TRUE),
@@ -48,7 +59,9 @@ as_dpkg <- function(x, name = deparse(substitute(x)), version = "0.0.0.9000",
 
 #' @export
 print.dpkg <- function(x, ...) {
-  cli::cli_text("# [{cli::symbol$menu}] {attr(x, 'name')}-v{attr(x, 'version')}")
+  cli::cli_text(
+    "# [{cli::symbol$menu}] {attr(x, 'name')}-v{attr(x, 'version')}"
+  )
   if (length(attr(x, "title") > 0)) {
     cli::cli_text("# title: \"{attr(x, 'title')}\" ")
   }
@@ -70,7 +83,7 @@ print.dpkg <- function(x, ...) {
 #' attr(x, "description") <- "This is a data set all about characteristics of different cars"
 #' attr(x, "homepage") <- "https://github.com/cole-brokamp/dpkg"
 #' x
-#' 
+#'
 #' dpkg_meta(x)
 dpkg_meta <- function(x) {
   attributes(x)[c("name", "version", "title", "homepage", "description")]
@@ -78,7 +91,9 @@ dpkg_meta <- function(x) {
 
 check_label <- function(x, label_name, required = FALSE) {
   if (!is.character(x)) {
-    rlang::abort(glue::glue("`{label_name}` must be <character>, not <{class(x)}>"))
+    rlang::abort(glue::glue(
+      "`{label_name}` must be <character>, not <{class(x)}>"
+    ))
   } else if (required && length(x) != 1) {
     rlang::abort(glue::glue("`{label_name}` must be length 1"))
   } else if (length(x) > 1) {

@@ -1,6 +1,9 @@
 test_that("extract dpkg", {
   x <- as_dpkg(mtcars, name = "mtcars", title = "Motor Trend Road Car Tests")
-  attr(x, "description") <- "This is a data set all about characteristics of different cars"
+  attr(
+    x,
+    "description"
+  ) <- "This is a data set all about characteristics of different cars"
   attr(x, "homepage") <- "https://github.com/cole-brokamp/dpkg"
   x[1] |>
     expect_s3_class("dpkg")
@@ -8,8 +11,11 @@ test_that("extract dpkg", {
 
 test_that("using dplyr verbs with dpkg objects do not error", {
   x <- as_dpkg(mtcars, name = "mtcars", title = "Motor Trend Road Car Tests")
-  attr(x, "description")<- "This is a data set all about characteristics of different cars"
-  attr(x, "homepage")<- "https://github.com/cole-brokamp/dpkg"
+  attr(
+    x,
+    "description"
+  ) <- "This is a data set all about characteristics of different cars"
+  attr(x, "homepage") <- "https://github.com/cole-brokamp/dpkg"
   dplyr::left_join(x, mtcars, by = "vs", relationship = "many-to-many") |>
     expect_no_error()
   dplyr::left_join(mtcars, x, by = "vs", relationship = "many-to-many") |>
@@ -31,5 +37,4 @@ test_that("using dplyr verbs with dpkg objects do not error", {
     expect_no_error()
   dplyr::slice(x, 1) |>
     expect_no_error()
-
 })

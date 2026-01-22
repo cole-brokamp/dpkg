@@ -53,14 +53,17 @@ stow <- function(uri, overwrite = FALSE) {
       as.list() |>
       stats::setNames(c("owner", "repo", "dpkg"))
     out <-
-      stow_gh_release(uri_parts$owner,
+      stow_gh_release(
+        uri_parts$owner,
         repo = uri_parts$repo,
         dpkg = uri_parts$dpkg,
         overwrite = overwrite
       )
     return(out)
   }
-  rlang::abort("uri must begin with `https://`, `http://`, `ftp://`, or `gh://`")
+  rlang::abort(
+    "uri must begin with `https://`, `http://`, `ftp://`, or `gh://`"
+  )
 }
 
 #' download a file to the `stow` R user directory
@@ -119,7 +122,9 @@ stow_url <- function(url, overwrite = FALSE) {
 #'
 #' stow_remove(.delete_stow_dir_confirm = TRUE)
 stow_info <- function(filename = NULL) {
-  if (!stow_exists(filename)) rlang::abort("file or folder does not exist")
+  if (!stow_exists(filename)) {
+    rlang::abort("file or folder does not exist")
+  }
   if (is.null(filename)) {
     return(fs::dir_info(stow_path()))
   }
@@ -132,7 +137,9 @@ stow_info <- function(filename = NULL) {
 stow_path <- function(filename = NULL) {
   the_path <- fs::path(tools::R_user_dir("stow", "data"))
   fs::dir_create(the_path)
-  if (!is.null(filename)) the_path <- fs::path(the_path, filename)
+  if (!is.null(filename)) {
+    the_path <- fs::path(the_path, filename)
+  }
   return(as.character(the_path))
 }
 
@@ -158,10 +165,16 @@ stow_remove <- function(filename = NULL, .delete_stow_dir_confirm = FALSE) {
   if (is.null(filename)) {
     if (!.delete_stow_dir_confirm) {
       message(stow_path(), " has a total size of ", stow_size())
-      answer <- utils::askYesNo("Are you sure you want to delete the entire stow directory?")
+      answer <- utils::askYesNo(
+        "Are you sure you want to delete the entire stow directory?"
+      )
     }
-    if (.delete_stow_dir_confirm) answer <- TRUE
-    if (answer) fs::dir_delete(stow_path())
+    if (.delete_stow_dir_confirm) {
+      answer <- TRUE
+    }
+    if (answer) {
+      fs::dir_delete(stow_path())
+    }
     return(invisible(NULL))
   }
   fs::file_delete(stow_path(filename))

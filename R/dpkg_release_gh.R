@@ -11,7 +11,7 @@
 #' The GitHub release will *not* be set to the latest release in order to prevent
 #' problems with other automated actions that rely on the latest release, like
 #' R universe or remotes `"*release"` syntax or other GitHub actions.
-#' 
+#'
 #' Release tags are required to be unique, so this will fail if a release with the same
 #' name and version already exists.
 #' @param x a data package (`dpkg`) object
@@ -36,7 +36,9 @@
 #' #> created release at: https://github.com/cole-brokamp/dpkg/releases/tag/mtcars-v0.0.0.9001
 #'
 dpkg_gh_release <- function(x, draft = TRUE) {
-  if (!inherits(x, "dpkg")) rlang::abort("x must be a `dpkg` object`")
+  if (!inherits(x, "dpkg")) {
+    rlang::abort("x must be a `dpkg` object`")
+  }
   rlang::check_installed("gert", "get current git commit")
   rlang::check_installed("gh", "create a release on github")
   gh_owner <- gh::gh_tree_remote()$username
@@ -56,7 +58,9 @@ dpkg_gh_release <- function(x, draft = TRUE) {
   gh_release_id <- draft_release_details$id
 
   put_asset_req <-
-    glue::glue("https://uploads.github.com/repos/{gh_owner}/{gh_repo}/releases/{gh_release_id}/assets") |>
+    glue::glue(
+      "https://uploads.github.com/repos/{gh_owner}/{gh_repo}/releases/{gh_release_id}/assets"
+    ) |>
     httr2::request() |>
     httr2::req_method("POST") |>
     httr2::req_headers(
@@ -70,11 +74,15 @@ dpkg_gh_release <- function(x, draft = TRUE) {
   written_path <- write_dpkg(x, tempdir())
 
   put_asset_req |>
-    httr2::req_url_query(name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}.parquet")) |>
+    httr2::req_url_query(
+      name = glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}.parquet")
+    ) |>
     httr2::req_body_file(written_path) |>
     httr2::req_perform()
 
-  message(glue::glue("created {ifelse(draft, 'draft release', 'release')} at: {draft_release_details$html_url}"))
+  message(glue::glue(
+    "created {ifelse(draft, 'draft release', 'release')} at: {draft_release_details$html_url}"
+  ))
   return(invisible(draft_release_details$html_url))
 }
 
@@ -106,7 +114,9 @@ dpkg_gh_release <- function(x, draft = TRUE) {
 #' }
 #'
 use_dpkg_badge <- function(x) {
-  if (!inherits(x, "dpkg")) rlang::abort("x must be a `dpkg` object`")
+  if (!inherits(x, "dpkg")) {
+    rlang::abort("x must be a `dpkg` object`")
+  }
   rlang::check_installed("gert", "get current git commit")
   rlang::check_installed("gh", "create a release on github")
   gh_owner <- gh::gh_tree_remote()$username
@@ -119,10 +129,15 @@ use_dpkg_badge <- function(x) {
     "&display_name=tag",
     "&label=%5B%E2%98%B0%5D&labelColor=%238CB4C3&color=%23396175"
   )
-  badge_href <- glue::glue("https://github.com/{gh_owner}/{gh_repo}/releases?q={attr(x, 'name')}&expanded=false")
+  badge_href <- glue::glue(
+    "https://github.com/{gh_owner}/{gh_repo}/releases?q={attr(x, 'name')}&expanded=false"
+  )
   rlang::check_installed("usethis", "insert markdown badges into README")
-  usethis::use_badge(glue::glue("latest github release for {attr(x, 'name')} dpkg"),
-                     href = badge_href, src = badge_src)
+  usethis::use_badge(
+    glue::glue("latest github release for {attr(x, 'name')} dpkg"),
+    href = badge_href,
+    src = badge_src
+  )
   return(invisible(glue::glue("[![]({badge_src})](badge_href)")))
 }
 
@@ -132,15 +147,53 @@ get_gh_token <- function() {
   gh_token <- Sys.getenv("GITHUB_PAT")
   if (gh_token == "") {
     message("using bundled github token to access a public repository")
-    message("use your own token by defining the `GITHUB_PAT` environment variable")
+    message(
+      "use your own token by defining the `GITHUB_PAT` environment variable"
+    )
     gh_token <-
       paste0(
         "0x",
         c(
-          "67", "68", "70", "5f", "37", "74", "4d", "50", "65",
-          "32", "6e", "38", "33", "4b", "4c", "75", "47", "57", "44", "32",
-          "6f", "65", "61", "69", "47", "7a", "72", "70", "49", "34", "55",
-          "41", "4d", "58", "33", "44", "48", "78", "33", "47"
+          "67",
+          "68",
+          "70",
+          "5f",
+          "37",
+          "74",
+          "4d",
+          "50",
+          "65",
+          "32",
+          "6e",
+          "38",
+          "33",
+          "4b",
+          "4c",
+          "75",
+          "47",
+          "57",
+          "44",
+          "32",
+          "6f",
+          "65",
+          "61",
+          "69",
+          "47",
+          "7a",
+          "72",
+          "70",
+          "49",
+          "34",
+          "55",
+          "41",
+          "4d",
+          "58",
+          "33",
+          "44",
+          "48",
+          "78",
+          "33",
+          "47"
         )
       ) |>
       as.raw() |>
@@ -161,7 +214,9 @@ stow_gh_release <- function(owner, repo, dpkg, overwrite = FALSE) {
     return(stow_path(dpkg_filename))
   }
   the_release <-
-    httr2::request(glue::glue("https://api.github.com/repos/{owner}/{repo}/releases/tags/{dpkg}")) |>
+    httr2::request(glue::glue(
+      "https://api.github.com/repos/{owner}/{repo}/releases/tags/{dpkg}"
+    )) |>
     httr2::req_headers(
       Accept = "application/vnd.github+json",
       Authorization = glue::glue("Bearer {get_gh_token()}"),
@@ -172,7 +227,9 @@ stow_gh_release <- function(owner, repo, dpkg, overwrite = FALSE) {
     httr2::resp_body_json()
 
   the_assets <-
-    httr2::request(glue::glue("https://api.github.com/repos/{owner}/{repo}/releases/{the_release$id}/assets")) |>
+    httr2::request(glue::glue(
+      "https://api.github.com/repos/{owner}/{repo}/releases/{the_release$id}/assets"
+    )) |>
     httr2::req_headers(
       Accept = "application/vnd.github+json",
       Authorization = glue::glue("Bearer {get_gh_token()}"),
@@ -182,7 +239,11 @@ stow_gh_release <- function(owner, repo, dpkg, overwrite = FALSE) {
     httr2::req_perform() |>
     httr2::resp_body_json()
 
-  the_asset <- the_assets[[which(vapply(the_assets, \(.) .$name == paste0(dpkg, ".parquet"), logical(1)))]]
+  the_asset <- the_assets[[which(vapply(
+    the_assets,
+    \(.) .$name == paste0(dpkg, ".parquet"),
+    logical(1)
+  ))]]
 
   stow_url(the_asset$browser_download_url)
 

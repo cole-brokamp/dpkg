@@ -8,10 +8,14 @@ test_that("stow_info() and friends work", {
 
   expect_true(grepl("Rtmp", stow_path(), fixed = TRUE))
 
-  stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds") |>
+  stow(
+    "https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds"
+  ) |>
     expect_identical(stow_path("nei_2020.rds"))
 
-  stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/ADDR/tl_2024_39061_addr.zip") |>
+  stow(
+    "ftp://ftp2.census.gov/geo/tiger/TIGER2024/ADDR/tl_2024_39061_addr.zip"
+  ) |>
     expect_identical(stow_path("tl_2024_39061_addr.zip"))
 
   stow_size("nei_2020.rds") |>
@@ -22,5 +26,4 @@ test_that("stow_info() and friends work", {
 
   stow_remove(.delete_stow_dir_confirm = TRUE)
   expect_identical(nrow(stow_info()), 0L)
-
 })
