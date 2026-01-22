@@ -1,6 +1,7 @@
 # dpkg 0.6.2
 
 - use digest package to hash serialized R objects
+- stow() gains support for ftp-based URLs
 
 # dpkg 0.6.1
 
