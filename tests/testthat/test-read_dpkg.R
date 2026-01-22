@@ -1,6 +1,9 @@
 test_that("read_dpkg() and read_dpkg_metadata() works", {
   d <- as_dpkg(mtcars, version = "0.1.0", title = "Motor Trend Road Car Tests")
-  attr(d, "description") <- "This is a data set all about characteristics of different cars"
+  attr(
+    d,
+    "description"
+  ) <- "This is a data set all about characteristics of different cars"
   attr(d, "homepage") <- "https://github.com/cole-brokamp/dpkg"
 
   out <- write_dpkg(d, dir = tempdir())
@@ -22,16 +25,26 @@ test_that("read_dpkg() and read_dpkg_metadata() works", {
   the_md |>
     expect_identical(
       list(
-        name = "mtcars", version = "0.1.0",
+        name = "mtcars",
+        version = "0.1.0",
         title = "Motor Trend Road Car Tests",
         homepage = "https://github.com/cole-brokamp/dpkg",
         description = "This is a data set all about characteristics of different cars",
-        hash = "502c9e71f62f79debf7e769e071df0b4",
+        hash = "5affb6d56c4c97a6131dbe015f03b0b58cb653291706eeaaaac374f67a929c37",
         num_rows = 32L,
         num_cols = 11L,
         fields = c(
-          "mpg", "cyl", "disp", "hp", "drat",
-          "wt", "qsec", "vs", "am", "gear", "carb"
+          "mpg",
+          "cyl",
+          "disp",
+          "hp",
+          "drat",
+          "wt",
+          "qsec",
+          "vs",
+          "am",
+          "gear",
+          "carb"
         )
       )
     )

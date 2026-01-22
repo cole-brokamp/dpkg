@@ -1,3 +1,7 @@
+# dpkg dev
+
+- use digest package to hash serialized R objects
+
 # dpkg 0.6.1
 
 - dpkg github releases are no longer set to be the "latest" release
@@ -8,4 +12,4 @@
 
 # dpkg 0.5.1
 
-* Initial CRAN submission.
+- Initial CRAN submission.

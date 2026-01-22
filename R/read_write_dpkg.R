@@ -3,12 +3,22 @@
 read_dpkg_metadata <- function(x) {
   x_a <- arrow::open_dataset(x)
   if (length(x_a$metadata$r$attributes$class) == 0) {
-    rlang::abort("parquet file does not contain R specific metadata created when saving with the arrow package")
+    rlang::abort(
+      "parquet file does not contain R specific metadata created when saving with the arrow package"
+    )
   }
   if (!"dpkg" %in% x_a$metadata$r$attributes$class) {
     rlang::abort("R object in the parquet file must be class 'dpkg'")
   }
-  out <- x_a$metadata$r$attributes[c("name", "version", "title", "homepage", "description", "hash", "created")]
+  out <- x_a$metadata$r$attributes[c(
+    "name",
+    "version",
+    "title",
+    "homepage",
+    "description",
+    "hash",
+    "created"
+  )]
   out$created <- as.POSIXct(as.character(out$created))
   out$num_rows <- x_a$num_rows
   out$num_cols <- x_a$num_cols
@@ -58,12 +68,24 @@ read_dpkg <- function(x) {
 #' @returns path to the written file, invisibly
 #' @export
 write_dpkg <- function(x, dir) {
-  if (!inherits(x, "dpkg")) rlang::abort("x must be a `dpkg` object`")
-  out_path <- fs::path(dir, glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"), ext = "parquet")
-  attr(x, "hash") <- rlang::hash(x)
+  if (!inherits(x, "dpkg")) {
+    rlang::abort("x must be a `dpkg` object`")
+  }
+  out_path <- fs::path(
+    dir,
+    glue::glue("{attr(x, 'name')}-v{attr(x, 'version')}"),
+    ext = "parquet"
+  )
+  attr(x, "hash") <- digest::digest(
+    serialize(x, NULL, version = 2),
+    algo = "sha256"
+  )
   attr(x, "created") <- as.character(Sys.time())
   if ("sfc" %in% unlist(sapply(x, class))) {
-    rlang::check_installed("geoarrow", "to write geographic data in parquet files.")
+    rlang::check_installed(
+      "geoarrow",
+      "to write geographic data in parquet files."
+    )
     requireNamespace("geoarrow")
   }
   arrow::write_parquet(x, out_path)
