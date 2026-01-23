@@ -58,15 +58,10 @@ stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds
   readRDS()
 
 # will be faster (even in later R sessions) next time
-stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds") |>
-  readRDS()
+stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
 
 # get a data package from a GitHub release
-stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000", overwrite = TRUE) |>
-  arrow::read_parquet()
-
-stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000") |>
-  arrow::read_parquet()
+stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000")
 
 # use FTP protocol
 stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/ADDR/tl_2024_39061_addr.zip")
