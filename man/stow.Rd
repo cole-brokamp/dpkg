@@ -50,6 +50,7 @@ has already been downloaded once, it will not be re-downloaded again
 (unless \code{overwrite = TRUE}).
 }
 \examples{
+\dontrun{
 Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
 # get by using URL
 stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds",
@@ -65,4 +66,5 @@ stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000")
 
 # use FTP protocol
 stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/ADDR/tl_2024_39061_addr.zip")
+}
 }

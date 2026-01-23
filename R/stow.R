@@ -22,6 +22,7 @@
 #' @returns path to the stowed file or url to github release
 #' @export
 #' @examples
+#' \dontrun{
 #' Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
 #' # get by using URL
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds",
@@ -37,6 +38,7 @@
 #'
 #' # use FTP protocol
 #' stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/ADDR/tl_2024_39061_addr.zip")
+#' }
 stow <- function(uri, overwrite = FALSE) {
   if (grepl("^https?://", uri) || grepl("^ftp://", uri)) {
     out <- stow_url(url = uri, overwrite = overwrite)
