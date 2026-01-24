@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/cole-brokamp/dpkg/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/cole-brokamp/dpkg/blob/v0.6.2/DESCRIPTION)
 
 Brokamp C (2026). *dpkg: Create, Stow, and Read Data Packages*. R
 package version 0.6.2, <https://github.com/cole-brokamp/dpkg>.

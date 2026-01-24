@@ -122,7 +122,7 @@ read_dpkg_metadata(fs::path_temp("nc_data-v0.0.0.9000.parquet"))
 #> [1] "289449022c576625697e520e221775f5a0074c9f342f41f25614224b99107acc"
 #> 
 #> $created
-#> [1] "2026-01-24 13:23:03 UTC"
+#> [1] "2026-01-24 13:25:24 UTC"
 #> 
 #> $num_rows
 #> [1] 100
