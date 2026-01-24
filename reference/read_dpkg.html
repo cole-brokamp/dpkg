@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">dpkg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>read (meta)data from dpkg on disk</h1>
-      <small class="dont-index">Source: <a href="https://github.com/cole-brokamp/dpkg/blob/v0.6.1/R/read_write_dpkg.R" class="external-link"><code>R/read_write_dpkg.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cole-brokamp/dpkg/blob/main/R/read_write_dpkg.R" class="external-link"><code>R/read_write_dpkg.R</code></a></small>
       <div class="d-none name"><code>read_dpkg.Rd</code></div>
     </div>
 
@@ -86,7 +86,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 22 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># geo objects are supported via the `geoarrow_vctr` in the geoarrow package</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/geoarrow/geoarrow-r" class="external-link">geoarrow</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://geoarrow.org/geoarrow-r/" class="external-link">geoarrow</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"gpkg/nc.gpkg"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="as_dpkg.html">as_dpkg</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"nc_data"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="write_dpkg.html">write_dpkg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -155,10 +155,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $hash</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "4c4ac11136230adb2912ffa5a6c5b934"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "289449022c576625697e520e221775f5a0074c9f342f41f25614224b99107acc"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $created</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2025-01-09 03:23:28 UTC"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-01-24 13:23:03 UTC"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $num_rows</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
@@ -172,7 +172,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] "SID79"     "NWBIR79"   "geom"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $file_size</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38.5K</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39K</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -184,7 +184,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
