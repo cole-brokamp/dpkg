@@ -1,5 +1,4 @@
 test_that("checking name property works", {
-
   as_dpkg(mtcars, name = "mtcars", version = "0.a1.2") |>
     expect_error("invalid version specification")
 
@@ -17,7 +16,7 @@ test_that("checking name property works", {
 
   as_dpkg(mtcars, name = "<foofy>") |>
     expect_error("name must only contain alphanumeric")
-  
+
   check_label("my_value", "the_name") |>
     expect_identical("my_value")
 
@@ -26,5 +25,4 @@ test_that("checking name property works", {
 
   check_label(c("a", "b"), "the_thing", required = TRUE) |>
     expect_error("`the_thing` must be length 1")
-
 })

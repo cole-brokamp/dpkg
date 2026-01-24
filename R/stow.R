@@ -16,31 +16,31 @@
 #' has already been downloaded once, it will not be re-downloaded again
 #' (unless `overwrite = TRUE`).
 #' @param uri character string universal resource identifier; currently, must begin
-#' with `http://`, `https://`, or `gh://`
+#' with `http://`, `https://`, `ftp://`, or `gh://`
 #' @param overwrite logical; re-download the remote file even though
 #' a local file with the same name exists?
 #' @returns path to the stowed file or url to github release
 #' @export
 #' @examples
+#' \dontrun{
 #' Sys.setenv(R_USER_DATA_DIR = tempfile("stow"))
 #' # get by using URL
 #' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds",
-#'      overwrite = TRUE) |>
+#'   overwrite = TRUE
+#' ) |>
 #'   readRDS()
 #'
 #' # will be faster (even in later R sessions) next time
-#' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds") |>
-#'   readRDS()
+#' stow("https://github.com/geomarker-io/appc/releases/download/v0.1.0/nei_2020.rds")
 #'
 #' # get a data package from a GitHub release
-#' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000", overwrite = TRUE) |>
-#'   arrow::read_parquet()
-#' 
-#' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000") |>
-#'   arrow::read_parquet()
-#' 
+#' stow("gh://cole-brokamp/dpkg/mtcars-v0.0.0.9000")
+#'
+#' # use FTP protocol
+#' stow("ftp://ftp2.census.gov/geo/tiger/TIGER2024/ADDR/tl_2024_39061_addr.zip")
+#' }
 stow <- function(uri, overwrite = FALSE) {
-  if (grepl("^https?://", uri)) {
+  if (grepl("^https?://", uri) || grepl("^ftp://", uri)) {
     out <- stow_url(url = uri, overwrite = overwrite)
     return(out)
   }
@@ -50,29 +50,39 @@ stow <- function(uri, overwrite = FALSE) {
       as.list() |>
       stats::setNames(c("owner", "repo", "dpkg"))
     out <-
-      stow_gh_release(uri_parts$owner,
+      stow_gh_release(
+        uri_parts$owner,
         repo = uri_parts$repo,
         dpkg = uri_parts$dpkg,
         overwrite = overwrite
       )
     return(out)
   }
-  rlang::abort("uri must begin with `https://`, or `http://`, or `gh://`")
+  rlang::abort(
+    "uri must begin with `https://`, `http://`, `ftp://`, or `gh://`"
+  )
 }
 
 #' download a file to the `stow` R user directory
 #'
 #' @rdname stow
-#' @param url a URL string starting with `http://` or `https://`
+#' @param url a URL string starting with `http://`, `https://`, or `ftp://`
 #' @export
 stow_url <- function(url, overwrite = FALSE) {
-  if (!grepl("^https?://", url)) rlang::abort("x must start with `http://` or `https://`")
-  dest_path <- stow_path(fs::path_file(url))
-  if (fs::file_exists(dest_path) && !overwrite) {
-    return(dest_path)
+  if (!grepl("^https?://", url)) {
+    if (!grepl("^ftp://", url)) {
+      rlang::abort("x must start with `http://`, `https://`, or `ftp://`")
+    }
   }
-  httr2::req_perform(httr2::request(url), path = dest_path)
-  return(dest_path)
+  dest_path <- stow_path(fs::path_file(url))
+  if (!fs::file_exists(dest_path) || overwrite) {
+    tf <- tempfile()
+    on.exit(file.remove(tf))
+    utils::download.file(url, tf)
+    file.copy(tf, dest_path)
+  }
+  out <- as.character(dest_path)
+  return(out)
 }
 
 #' get info about stowed files
@@ -109,7 +119,9 @@ stow_url <- function(url, overwrite = FALSE) {
 #'
 #' stow_remove(.delete_stow_dir_confirm = TRUE)
 stow_info <- function(filename = NULL) {
-  if (!stow_exists(filename)) rlang::abort("file or folder does not exist")
+  if (!stow_exists(filename)) {
+    rlang::abort("file or folder does not exist")
+  }
   if (is.null(filename)) {
     return(fs::dir_info(stow_path()))
   }
@@ -122,8 +134,10 @@ stow_info <- function(filename = NULL) {
 stow_path <- function(filename = NULL) {
   the_path <- fs::path(tools::R_user_dir("stow", "data"))
   fs::dir_create(the_path)
-  if (!is.null(filename)) the_path <- fs::path(the_path, filename)
-  return(the_path)
+  if (!is.null(filename)) {
+    the_path <- fs::path(the_path, filename)
+  }
+  return(as.character(the_path))
 }
 
 #' test if a stowed file (or the stow directory) exists
@@ -148,10 +162,16 @@ stow_remove <- function(filename = NULL, .delete_stow_dir_confirm = FALSE) {
   if (is.null(filename)) {
     if (!.delete_stow_dir_confirm) {
       message(stow_path(), " has a total size of ", stow_size())
-      answer <- utils::askYesNo("Are you sure you want to delete the entire stow directory?")
+      answer <- utils::askYesNo(
+        "Are you sure you want to delete the entire stow directory?"
+      )
     }
-    if (.delete_stow_dir_confirm) answer <- TRUE
-    if (answer) fs::dir_delete(stow_path())
+    if (.delete_stow_dir_confirm) {
+      answer <- TRUE
+    }
+    if (answer) {
+      fs::dir_delete(stow_path())
+    }
     return(invisible(NULL))
   }
   fs::file_delete(stow_path(filename))
